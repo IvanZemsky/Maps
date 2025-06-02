@@ -1,0 +1,20 @@
+:root {
+   --secondary-main: #000;
+}
+
+html {
+   font-family: "Montserrat", sans-serif;
+   color: var(--secondary-main);
+}
+
+a,
+button,
+input,
+textarea {
+   font-family: "Montserrat", sans-serif;
+}
+
+a,
+a:visited {
+   color: inherit;
+}
