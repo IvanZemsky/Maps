@@ -1,21 +1,47 @@
 <script setup lang="ts">
+import { useRegionStore } from "@/features/load-region"
+import { useNewRegionStore } from "@/features/new-region"
 import { formatDate } from "@/shared/lib"
 import { FileSelector } from "@/shared/ui"
 import { NavigationIcon } from "@/shared/ui/icons"
 
 const currentDate = formatDate(Date.now())
+
+const regionStore = useRegionStore()
+
+const newRegionStore = useNewRegionStore()
+
+function openControls() {
+  regionStore.region = null
+  newRegionStore.isEditing = true
+}
 </script>
 
 <template>
    <header class="header">
       <ui-wrapper>
-         <ui-spacing class="header__left">
-            <ui-spacing align="center">
+         <ui-spacing class="header-left">
+            <ui-spacing align="center" gap="sm">
                <p>{{ currentDate }}</p>
-               <FileSelector id="region-selector" variant="ghost" size="sm">
+
+               <div class="selected-region" v-if="regionStore.region">
+                  {{ regionStore.region?.name }}
+               </div>
+
+               <FileSelector
+                  id="region-selector"
+                  variant="ghost"
+                  size="sm"
+                  accept=".json"
+                  @change="regionStore.loadRegionJSON"
+               >
                   <template #start-icon><NavigationIcon /></template>
                   Select region
                </FileSelector>
+
+               <ui-button size="sm" @click="openControls">
+                  New region
+               </ui-button>
             </ui-spacing>
          </ui-spacing>
       </ui-wrapper>
@@ -23,12 +49,24 @@ const currentDate = formatDate(Date.now())
 </template>
 
 <style scoped>
-.header__left,
-.header__right {
+.header {
+   width: 100%;
+   background-color: var(--bg);
+}
+.header-left,
+.header-right {
    padding: 8px 0;
 }
-.header__left {
+.header-left {
    padding-right: 10px;
    border-right: 1px solid var(--neutral-main);
+}
+.selected-region {
+   background-color: var(--primary-main);
+   color: var(--primary-contrast);
+   gap: 0.4rem;
+   font-weight: 500;
+   border-radius: 0.5rem;
+   padding: 0.4rem 0.6rem;
 }
 </style>
