@@ -6,15 +6,18 @@ import MainHeader from "./main-header.vue"
 <template>
    <ui-spacing class="layout" vertical gap="none">
       <MainHeader/>
-      <ui-spacing as="main" align="stretch" grow fill>
+      <ui-spacing class="main" as="main" align="stretch" grow fill>
          <router-view />
       </ui-spacing>
-      <footer></footer>
    </ui-spacing>
 </template>
 
 <style scoped>
 .layout {
-   min-height: 100vh;
+   height: 100vh;
+   overflow-y: hidden;
+}
+.main {
+   overflow-y: hidden;
 }
 </style>

@@ -9,7 +9,6 @@ import {
 } from "@vue-leaflet/vue-leaflet"
 import type { LatLngTuple, PointTuple } from "leaflet" // Import LeafletMouseEvent
 import { computed, ref, watch } from "vue"
-import NewRegionModal from "@/features/new-region/ui/new-region-modal.vue"
 import { useNewRegionStore } from "@/features/new-region"
 import NewRegionControls from "@/features/new-region/ui/new-region-controls.vue"
 
@@ -63,12 +62,13 @@ const { handleDraw } = newRegionStore
          </l-map>
       </ui-spacing>
    </ui-spacing>
-
-   <NewRegionModal />
 </template>
 
 <style scoped>
 .page {
    flex-shrink: 0;
+}
+.content {
+   position: relative;
 }
 </style>
