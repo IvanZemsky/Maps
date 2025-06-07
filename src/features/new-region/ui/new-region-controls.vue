@@ -37,7 +37,7 @@ const newRegionStore = useNewRegionStore()
    left: 0;
    bottom: 0;
    width: 340px;
-   background-color: var(--bg);
+   background-color: var(--primary-contrast);
    height: 100%;
    padding: 1rem 0 1rem 1rem;
    z-index: 500;
@@ -54,9 +54,5 @@ const newRegionStore = useNewRegionStore()
 
 .content {
    display: flex;
-}
-
-button.key-draw-control-btn:disabled {
-   background-color: var(--neutral-main);
 }
 </style>

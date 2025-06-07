@@ -51,7 +51,7 @@ function openControls() {
 <style scoped>
 .header {
    width: 100%;
-   background-color: var(--bg);
+   background-color: var(--secondary-contrast);
 }
 .header-left,
 .header-right {
@@ -62,8 +62,6 @@ function openControls() {
    border-right: 1px solid var(--neutral-main);
 }
 .selected-region {
-   background-color: var(--primary-main);
-   color: var(--primary-contrast);
    gap: 0.4rem;
    font-weight: 500;
    border-radius: 0.5rem;
