@@ -13,7 +13,7 @@ const newRegionStore = useNewRegionStore()
 
 function openControls() {
   regionStore.region = null
-  newRegionStore.isEditing = true
+  newRegionStore.isDrawing = true
 }
 </script>
 

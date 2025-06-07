@@ -1,109 +1,173 @@
 import type { Region, RegionPolygon } from "@/entities/region"
 import type { LeafletMouseEvent } from "leaflet"
 import { defineStore } from "pinia"
-import { ref, watch } from "vue"
+import { ref } from "vue"
+
+const defaultRegion: Region = {
+   name: "",
+   keys: [
+      {
+         id: Date.now(),
+         name: "",
+         color: "#fffeee",
+         weight: 0,
+         polygons: [
+            {
+               id: Date.now() + 1,
+               latlngs: [],
+            },
+         ],
+      },
+   ],
+}
 
 export const useNewRegionStore = defineStore("newRegion", () => {
-   const region = ref<Region>({
-      name: "",
-      polygons: [
-         {
-            id: Date.now(),
-            name: "",
-            color: "#fffeee",
-            weight: 0,
-            latlngs: [],
-         },
-      ],
-   })
-   const isEditing = ref(false)
-   const drawingId = ref<number | null>(null)
-   const currentPolygon = ref<RegionPolygon>(region.value.polygons[0])
+   const region = ref<Region>(defaultRegion)
+   const isDrawing = ref(false)
+   const drawingPolygonId = ref<number | null>(null) // TODO: drawingPolygon???
+   const drawingKey = ref<RegionPolygon>(region.value.keys[0])
 
-   function createPolygon() {
-      region.value.polygons.push({
+   function createKey() {
+      region.value.keys.push({
          id: Date.now(),
          name: "",
          color: "#123456",
          weight: 0,
-         latlngs: [],
+         polygons: [
+            {
+               id: Date.now() + 1,
+               latlngs: [],
+            },
+         ],
       })
    }
 
    function setRegionName(name: string) {
       region.value = {
          name,
-         polygons: region.value?.polygons || [],
+         keys: region.value?.keys || [], // ?
       }
    }
 
-   function startDrawing(polygonId: number) {
+   function startDrawing(keyId: number, polygonId: number) {
       console.log("startDrawing")
-      setCurrentPolygon(polygonId)
-      drawingId.value = polygonId
+      drawingKey.value =
+         region.value.keys.find((key) => key.id === keyId) || region.value.keys[0] // TODO: add error handling
+      drawingPolygonId.value = polygonId
    }
 
    function stopDrawing() {
       console.log("stopDrawing")
-      drawingId.value = null
+      drawingPolygonId.value = null
    }
 
    function findPolygonById(id: number) {
-      return region.value.polygons.find((polygon) => polygon.id === id)
+      return region.value.keys.find((polygon) => polygon.id === id)
+   }
+
+   function findPolygonsByKeyId(id: number) {
+      return region.value.keys.find((key) => key.id === id)?.polygons || []
+   }
+
+   function findPolygonByDrawingId(id: number) {
+      return drawingKey.value.polygons.find((polygon) => polygon.id === id)
    }
 
    function handleDraw(event: LeafletMouseEvent) {
-      if (drawingId.value) {
-         let latlngs = currentPolygon.value.latlngs
-         console.log("latlngs:", latlngs)
-         console.log([event.latlng.lat, event.latlng.lng])
+      if (drawingPolygonId.value) {
+         let latlngs = findPolygonByDrawingId(drawingPolygonId.value)?.latlngs || [] // TODO: drawingPolygon???
+
          latlngs = [...latlngs, [event.latlng.lat, event.latlng.lng, undefined]]
-         currentPolygon.value = { ...currentPolygon.value, latlngs }
+
+         drawingKey.value = {
+            ...drawingKey.value,
+            polygons: updatePolygons(drawingPolygonId.value, latlngs),
+         }
+
          region.value = {
             ...region.value,
-            polygons: region.value.polygons.map((polygon) => {
-               if (polygon.id === currentPolygon.value.id) {
-                  return currentPolygon.value
-               }
-               return polygon
-            }),
+            keys: updateRegionKeys(),
          }
       }
+   }
+
+   function updatePolygons(
+      drawingPolygonId: number,
+      latlngs: [number, number, number | undefined][],
+   ) {
+      return drawingKey.value.polygons.map((polygon) => {
+         if (polygon.id === drawingPolygonId) {
+            return { ...polygon, latlngs }
+         }
+         return polygon
+      })
+   }
+
+   function updateRegionKeys() {
+      return region.value.keys.map((key) => {
+         if (key.id === drawingKey.value.id) {
+            return drawingKey.value
+         }
+         return key
+      })
    }
 
    function setColor(id: number, color: string) {
       region.value = {
          ...region.value,
-         polygons: region.value.polygons.map((polygon) => {
-            if (polygon.id === id) {
-               return { ...polygon, color }
+         keys: region.value.keys.map((key) => {
+            if (key.id === id) {
+               return { ...key, color }
             }
-            return polygon
+            return key
          }),
       }
    }
 
-   function setCurrentPolygon(polygonId: number): RegionPolygon | undefined {
+   function setDrawingKey(polygonId: number): RegionPolygon | undefined {
       const polygon = findPolygonById(polygonId)
       if (polygon) {
          console.log("polygon selected:", polygon)
-         currentPolygon.value = polygon
+         drawingKey.value = polygon
       }
       return polygon
    }
 
+   function createPolygon(id: number) {
+      const key = findPolygonById(id)
+      if (key) {
+         key.polygons.push({
+            id: Date.now() + 1,
+            latlngs: [],
+         })
+      }
+   }
+
+   function removePolygon(id: number) {
+      region.value = {
+         ...region.value,
+         keys: region.value.keys.map((key) => ({
+            ...key,
+            polygons: key.polygons.filter((polygon) => polygon.id !== id),
+         })),
+      }
+   }
+
    return {
       region,
-      drawingId,
-      isEditing,
-      currentPolygon,
+      drawingPolygonId,
+      isDrawing,
+      drawingKey,
       setRegionName,
-      createPolygon,
+      createKey,
       startDrawing,
       stopDrawing,
-      setCurrentPolygon,
+      setDrawingKey,
       handleDraw,
       setColor,
       findPolygonById,
+      findPolygonsByKeyId,
+      createPolygon,
+      removePolygon,
    }
 })

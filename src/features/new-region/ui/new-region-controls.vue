@@ -6,12 +6,12 @@ const newRegionStore = useNewRegionStore()
 </script>
 
 <template>
-   <ui-wrapper class="controls" v-if="newRegionStore.isEditing" paddings="both">
+   <ui-wrapper class="controls" v-if="newRegionStore.isDrawing" paddings="both">
       <div class="scroll-area">
          <ui-spacing class="content" vertical fill align="stretch" gap="sm">
             <ui-input placeholder="Region name" size="sm" />
             <ui-button
-               :disabled="!newRegionStore.drawingId"
+               :disabled="!newRegionStore.drawingPolygonId"
                @click="newRegionStore.stopDrawing"
                class="key-draw-control-btn"
                size="sm"
@@ -20,12 +20,12 @@ const newRegionStore = useNewRegionStore()
                Stop drawing
             </ui-button>
             <key-card
-               v-for="polygon in newRegionStore.region.polygons"
+               v-for="polygon in newRegionStore.region.keys"
                :id="polygon.id"
                :key="polygon.name"
                :name="polygon.name"
             />
-            <ui-button size="sm" @click="newRegionStore.createPolygon">Add key</ui-button>
+            <ui-button size="sm" @click="newRegionStore.createKey">Add key</ui-button>
          </ui-spacing>
       </div>
    </ui-wrapper>

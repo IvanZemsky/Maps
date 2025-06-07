@@ -1,20 +1,18 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed } from "vue"
 import { useNewRegionStore } from "../model/store"
 
 const { name, id } = defineProps<{ name: string; id: number }>()
 
 const newRegionStore = useNewRegionStore()
 
-function startDrowingPolygon() {
-   newRegionStore.startDrawing(id)
-}
-
 function handleColorChange(event: Event) {
    newRegionStore.setColor(id, (event.target as HTMLInputElement).value)
 }
 
-const { findPolygonById } = newRegionStore
+const { findPolygonById, findPolygonsByKeyId } = newRegionStore
+
+const polygons = computed(() => findPolygonsByKeyId(id))
 
 const defaultColor = computed(() => findPolygonById(id)?.color)
 
@@ -25,22 +23,45 @@ console.log(defaultColor.value)
    <ui-card class="key-card" size="sm">
       <ui-spacing vertical gap="sm" align="stretch">
          <ui-input placeholder="Key #1" size="sm" />
-         <ui-button
-            :disabled="newRegionStore.drawingId === id"
-            @click="startDrowingPolygon"
-            class="key-draw-control-btn"
-            size="sm"
-            variant="outlined"
-         >
-            Draw
-         </ui-button>
          <input
             class="color-input"
             type="color"
             @change="handleColorChange"
             :value="defaultColor"
          />
-         <ui-button class="select-key-btn" size="sm" variant="outlined">Clear</ui-button>
+
+         <ui-spacing
+            v-for="(polygon, index) in polygons"
+            :key="polygon.id"
+            :class="[
+               'polygon-card',
+               { active: newRegionStore.drawingPolygonId === polygon.id },
+            ]"
+            align="center"
+            gap="sm"
+         >
+            <p>{{ index + 1 }}</p>
+            <ui-button
+               :disabled="newRegionStore.drawingPolygonId === polygon.id"
+               @click="() => newRegionStore.startDrawing(id, polygon.id)"
+               class="key-draw-control-btn"
+               size="sm"
+               variant="outlined"
+            >
+               Draw
+            </ui-button>
+            <ui-button
+               class="key-draw-control-btn"
+               size="sm"
+               variant="outlined"
+               @click="() => newRegionStore.removePolygon(polygon.id)"
+            >
+               X
+            </ui-button>
+         </ui-spacing>
+         <ui-button size="sm" @click="() => newRegionStore.createPolygon(id)">
+            Add polygon
+         </ui-button>
       </ui-spacing>
    </ui-card>
 </template>

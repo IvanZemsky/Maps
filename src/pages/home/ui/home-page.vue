@@ -7,6 +7,8 @@ import {
    LControlScale,
    LControlZoom,
 } from "@vue-leaflet/vue-leaflet"
+import MapPolyline from "./map-polyline.vue"
+import MapPolygon from "./map-polygon.vue"
 import type { LatLngTuple, PointTuple } from "leaflet" // Import LeafletMouseEvent
 import { computed, ref, watch } from "vue"
 import { useNewRegionStore } from "@/features/new-region"
@@ -17,14 +19,20 @@ const zoom = ref(6) // in CONSTANT
 
 const newRegionStore = useNewRegionStore()
 
-const polygons = computed(() => newRegionStore.region.polygons)
+const isDrawing = computed(() => newRegionStore.drawingPolygonId !== null)
 
 const { handleDraw } = newRegionStore
 </script>
 
 <template>
    <ui-spacing class="page" vertical fill grow>
-      <ui-spacing class="content" fill grow gap="none">
+      <ui-spacing
+         class="content"
+         fill
+         grow
+         gap="none"
+         :class="['map', { 'cursor-pointer': isDrawing }]"
+      >
          <NewRegionControls />
 
          <l-map
@@ -42,23 +50,27 @@ const { handleDraw } = newRegionStore
                name="Stadia Maps Basemap"
             />
             <l-control-zoom position="bottomleft" />
-            <div class="polyline" v-for="polyline in polygons" :key="polyline.id">
+
+            <MapPolyline />
+            <MapPolygon />
+
+            <!-- <div class="polyline" v-for="polyline in allPolygons" :key="polyline.id">
                <l-polyline
-                  v-if="newRegionStore.drawingId === polyline.id"
+                  v-if="newRegionStore.drawingPolygonId === polyline.id"
                   :id="polyline.id"
                   :lat-lngs="polyline.latlngs"
                   :color="polyline.color"
                />
             </div>
-            <div class="polygon" v-for="polygon in polygons" :key="polygon.id">
+            <div class="polygon" v-for="polygon in allPolygons" :key="polygon.id">
                <l-polygon
-                  v-if="newRegionStore.drawingId !== polygon.id"
+                  v-if="newRegionStore.drawingPolygonId !== polygon.id"
                   :id="polygon.id"
                   :lat-lngs="polygon.latlngs"
                   :color="polygon.color"
                   :weight="polygon.weight"
                />
-            </div>
+            </div> -->
          </l-map>
       </ui-spacing>
    </ui-spacing>
@@ -68,6 +80,10 @@ const { handleDraw } = newRegionStore
 .page {
    flex-shrink: 0;
 }
+.cursor-pointer > .leaflet-container {
+   cursor: pointer;
+}
+
 .content {
    position: relative;
 }
