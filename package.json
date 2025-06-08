@@ -16,6 +16,7 @@
       "deploy": "gh-pages -d dist"
    },
    "dependencies": {
+      "@vicons/antd": "^0.13.0",
       "@vue-leaflet/vue-leaflet": "^0.10.1",
       "leaflet": "^1.9.4",
       "pinia": "^3.0.2",

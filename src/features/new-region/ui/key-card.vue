@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue"
 import { useNewRegionStore } from "../model/store"
+import KeyCardPolygon from "./key-card-polygon.vue"
 
-const { name, id } = defineProps<{ name: string; id: number }>()
+const { id } = defineProps<{ id: number }>()
 
 const newRegionStore = useNewRegionStore()
 
@@ -10,19 +11,25 @@ function handleColorChange(event: Event) {
    newRegionStore.setColor(id, (event.target as HTMLInputElement).value)
 }
 
-const { findPolygonById, findPolygonsByKeyId } = newRegionStore
+const { findKeyById } = newRegionStore
 
-const polygons = computed(() => findPolygonsByKeyId(id))
+const polygons = computed(() => findKeyById(id).polygons)
 
-const defaultColor = computed(() => findPolygonById(id)?.color)
+const defaultColor = computed(() => findKeyById(id)?.color)
 
-console.log(defaultColor.value)
+function handleRemoveKey() {
+   newRegionStore.removeKey(id)
+}
+
+function handleKeyNameChange(event: Event) {
+   newRegionStore.setKeyName(id, (event.target as HTMLInputElement).value)
+}
 </script>
 
 <template>
    <ui-card class="key-card" size="sm">
       <ui-spacing vertical gap="sm" align="stretch">
-         <ui-input placeholder="Key #1" size="sm" />
+         <ui-input placeholder="Key #1" size="sm" @input="handleKeyNameChange" />
          <input
             class="color-input"
             type="color"
@@ -30,38 +37,17 @@ console.log(defaultColor.value)
             :value="defaultColor"
          />
 
-         <ui-spacing
+         <KeyCardPolygon
             v-for="(polygon, index) in polygons"
             :key="polygon.id"
-            :class="[
-               'polygon-card',
-               { active: newRegionStore.drawingPolygonId === polygon.id },
-            ]"
-            align="center"
-            gap="sm"
-         >
-            <p>{{ index + 1 }}</p>
-            <ui-button
-               :disabled="newRegionStore.drawingPolygonId === polygon.id"
-               @click="() => newRegionStore.startDrawing(id, polygon.id)"
-               class="key-draw-control-btn"
-               size="sm"
-               variant="outlined"
-            >
-               Draw
-            </ui-button>
-            <ui-button
-               class="key-draw-control-btn"
-               size="sm"
-               variant="outlined"
-               @click="() => newRegionStore.removePolygon(polygon.id)"
-            >
-               X
-            </ui-button>
-         </ui-spacing>
+            :id="id"
+            :polygon="polygon"
+            :number="index + 1"
+         />
          <ui-button size="sm" @click="() => newRegionStore.createPolygon(id)">
             Add polygon
          </ui-button>
+         <ui-button size="sm" @click="handleRemoveKey">Remove</ui-button>
       </ui-spacing>
    </ui-card>
 </template>
@@ -70,13 +56,6 @@ console.log(defaultColor.value)
 :deep(.ui-card.size-sm).key-card {
    border-radius: 15px;
    padding: 0.4rem;
-}
-.key-draw-control-btn {
-   flex-grow: 1;
-   font-size: 0.8rem;
-}
-button.key-draw-control-btn:disabled {
-   background-color: var(--neutral-main);
 }
 .select-key-btn {
    width: 100%;

@@ -9,7 +9,7 @@ const defaultRegion: Region = {
       {
          id: Date.now(),
          name: "",
-         color: "#fffeee",
+         color: "#000000",
          weight: 0,
          polygons: [
             {
@@ -28,7 +28,7 @@ export const useNewRegionStore = defineStore("newRegion", () => {
    const drawingKey = ref<RegionPolygon>(region.value.keys[0])
 
    function createKey() {
-      region.value.keys.push({
+      const newKey: RegionPolygon = {
          id: Date.now(),
          name: "",
          color: "#123456",
@@ -39,34 +39,35 @@ export const useNewRegionStore = defineStore("newRegion", () => {
                latlngs: [],
             },
          ],
-      })
+      }
+
+      region.value.keys.push(newKey)
    }
 
    function setRegionName(name: string) {
-      region.value = {
-         name,
-         keys: region.value?.keys || [], // ?
-      }
+      region.value.name = name
+   }
+
+   function setKeyName(keyId: number, name: string) {
+      const key = findKeyById(keyId)
+      key.name = name
    }
 
    function startDrawing(keyId: number, polygonId: number) {
-      console.log("startDrawing")
-      drawingKey.value =
-         region.value.keys.find((key) => key.id === keyId) || region.value.keys[0] // TODO: add error handling
+      drawingKey.value = findKeyById(keyId)
       drawingPolygonId.value = polygonId
    }
 
    function stopDrawing() {
-      console.log("stopDrawing")
       drawingPolygonId.value = null
    }
 
-   function findPolygonById(id: number) {
-      return region.value.keys.find((polygon) => polygon.id === id)
-   }
-
-   function findPolygonsByKeyId(id: number) {
-      return region.value.keys.find((key) => key.id === id)?.polygons || []
+   function findKeyById(id: number) {
+      const key = region.value.keys.find((key) => key.id === id)
+      if (!key) {
+         throw new Error("Key not found")
+      }
+      return key
    }
 
    function findPolygonByDrawingId(id: number) {
@@ -125,22 +126,17 @@ export const useNewRegionStore = defineStore("newRegion", () => {
    }
 
    function setDrawingKey(polygonId: number): RegionPolygon | undefined {
-      const polygon = findPolygonById(polygonId)
-      if (polygon) {
-         console.log("polygon selected:", polygon)
-         drawingKey.value = polygon
-      }
-      return polygon
+      const key = findKeyById(polygonId)
+      drawingKey.value = key
+      return key
    }
 
    function createPolygon(id: number) {
-      const key = findPolygonById(id)
-      if (key) {
-         key.polygons.push({
-            id: Date.now() + 1,
-            latlngs: [],
-         })
-      }
+      const key = findKeyById(id)
+      key.polygons.push({
+         id: Date.now() + 1,
+         latlngs: [],
+      })
    }
 
    function removePolygon(id: number) {
@@ -151,6 +147,15 @@ export const useNewRegionStore = defineStore("newRegion", () => {
             polygons: key.polygons.filter((polygon) => polygon.id !== id),
          })),
       }
+      stopDrawing()
+   }
+
+   function removeKey(id: number) {
+      region.value = {
+         ...region.value,
+         keys: region.value.keys.filter((key) => key.id !== id),
+      }
+      stopDrawing()
    }
 
    return {
@@ -159,15 +164,16 @@ export const useNewRegionStore = defineStore("newRegion", () => {
       isDrawing,
       drawingKey,
       setRegionName,
+      setKeyName,
       createKey,
       startDrawing,
       stopDrawing,
       setDrawingKey,
       handleDraw,
       setColor,
-      findPolygonById,
-      findPolygonsByKeyId,
+      findKeyById,
       createPolygon,
       removePolygon,
+      removeKey,
    }
 })

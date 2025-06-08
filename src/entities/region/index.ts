@@ -1,2 +1,2 @@
-export type { Region, RegionPolygon } from "./model/types"
-export { regionSchema, regionPolygonSchema } from "./model/types"
+export type { Region, RegionPolygon, RegionKeyPolygon } from "./model/types"
+export { regionSchema, regionPolygonSchema, regionKeyPolygonSchema } from "./model/types"
