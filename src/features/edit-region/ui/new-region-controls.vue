@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia"
 import { useNewRegionStore } from "../model/store"
 import KeyCard from "./key-card.vue"
 
 const newRegionStore = useNewRegionStore()
 
-function handleRegionNameChange(event: Event) {
-   newRegionStore.setRegionName((event.target as HTMLInputElement).value)
-}
+const { region } = storeToRefs(newRegionStore)
+
 </script>
 
 <template>
@@ -17,22 +17,28 @@ function handleRegionNameChange(event: Event) {
                placeholder="Region name"
                size="sm"
                class="region-name-input"
-               @input="handleRegionNameChange"
+               v-model="region.name"
             />
-            <ui-button
-               :disabled="!newRegionStore.drawingPolygonId"
-               @click="newRegionStore.stopDrawing"
-               class="key-draw-control-btn"
-               size="sm"
-               variant="outlined"
-            >
-               Stop drawing
+            <ui-button size="sm" @click="newRegionStore.saveRegionToFile">
+               Save region
             </ui-button>
+            <div class="draw-btn-wrap">
+               <ui-button
+                  :disabled="!newRegionStore.drawingPolygon"
+                  @click="newRegionStore.stopDrawing"
+                  class="key-draw-control-btn"
+                  size="sm"
+                  variant="outlined"
+               >
+                  Stop drawing
+               </ui-button>
+            </div>
 
             <key-card
-               v-for="polygon in newRegionStore.region.keys"
-               :id="polygon.id"
-               :key="polygon.id"
+               v-for="(key, index) in newRegionStore.region.keys"
+               :id="key.id"
+               :key="key.id"
+               :number="index + 1"
             />
 
             <ui-button size="sm" @click="newRegionStore.createKey">Add key</ui-button>
@@ -56,8 +62,22 @@ function handleRegionNameChange(event: Event) {
    flex-direction: column;
 }
 
+.draw-btn-wrap {
+   position: sticky;
+   top: 0;
+   left: 0;
+   padding: 0.3rem 0;
+   background-color: var(--primary-contrast);
+   border-radius: 0 0 0.3rem 0.3rem;
+   z-index: 501;
+}
+
+.draw-btn-wrap .ui-button {
+   width: 100%;
+}
+
 .scroll-area {
-   overflow-y: auto;
+   overflow-y: scroll;
    padding-right: 1rem;
    flex: 1 1 auto;
 }

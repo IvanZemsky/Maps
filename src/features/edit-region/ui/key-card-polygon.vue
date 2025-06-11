@@ -5,8 +5,8 @@ import { CloseOutlined } from "@vicons/antd"
 
 const newRegionStore = useNewRegionStore()
 
-const { id, polygon, number } = defineProps<{
-   id: number
+const { keyId, polygon, number } = defineProps<{
+   keyId: number
    polygon: RegionKeyPolygon
    number: number
 }>()
@@ -16,22 +16,21 @@ function handleRemovePolygon() {
 }
 
 function handleDraw() {
-   newRegionStore.startDrawing(id, polygon.id)
+   newRegionStore.startDrawing(keyId, polygon.id)
 }
 </script>
 
 <template>
    <ui-spacing
-      :key="polygon.id"
       :class="[
          'polygon-card',
-         { active: newRegionStore.drawingPolygonId === polygon.id },
+         { active: newRegionStore.drawingPolygon?.id === polygon.id },
       ]"
       align="center"
       gap="sm"
    >
       <ui-button
-         :disabled="newRegionStore.drawingPolygonId === polygon.id"
+         :disabled="newRegionStore.drawingPolygon?.id === polygon.id"
          @click="handleDraw"
          class="key-draw-control-btn"
          size="sm"

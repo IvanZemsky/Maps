@@ -3,50 +3,35 @@ import { computed } from "vue"
 import { useNewRegionStore } from "../model/store"
 import KeyCardPolygon from "./key-card-polygon.vue"
 
-const { id } = defineProps<{ id: number }>()
+const { id } = defineProps<{ id: number; number: number }>()
 
 const newRegionStore = useNewRegionStore()
 
-function handleColorChange(event: Event) {
-   newRegionStore.setColor(id, (event.target as HTMLInputElement).value)
-}
-
-const { findKeyById } = newRegionStore
-
-const polygons = computed(() => findKeyById(id).polygons)
-
-const defaultColor = computed(() => findKeyById(id)?.color)
+const key = computed(() => newRegionStore.findKeyById(id))
 
 function handleRemoveKey() {
-   newRegionStore.removeKey(id)
+   newRegionStore.removeKey(key.value.id)
 }
 
-function handleKeyNameChange(event: Event) {
-   newRegionStore.setKeyName(id, (event.target as HTMLInputElement).value)
+function handleCreatePolygon() {
+   newRegionStore.createPolygon(id)
 }
 </script>
 
 <template>
    <ui-card class="key-card" size="sm">
       <ui-spacing vertical gap="sm" align="stretch">
-         <ui-input placeholder="Key #1" size="sm" @input="handleKeyNameChange" />
-         <input
-            class="color-input"
-            type="color"
-            @change="handleColorChange"
-            :value="defaultColor"
-         />
+         <ui-input :placeholder="`Key #${number}`" size="sm" v-model.trim="key.name" />
+         <input class="color-input" type="color" v-model.lazy="key.color" />
 
          <KeyCardPolygon
-            v-for="(polygon, index) in polygons"
+            v-for="(polygon, index) in key.polygons"
             :key="polygon.id"
-            :id="id"
+            :keyId="id"
             :polygon="polygon"
             :number="index + 1"
          />
-         <ui-button size="sm" @click="() => newRegionStore.createPolygon(id)">
-            Add polygon
-         </ui-button>
+         <ui-button size="sm" @click="handleCreatePolygon">Add polygon</ui-button>
          <ui-button size="sm" @click="handleRemoveKey">Remove</ui-button>
       </ui-spacing>
    </ui-card>
