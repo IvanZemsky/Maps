@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import { LMap, LTileLayer, LControlScale, LControlZoom } from "@vue-leaflet/vue-leaflet"
+import {
+   LMap,
+   LTileLayer,
+   LControlScale,
+   LControlZoom,
+} from "@vue-leaflet/vue-leaflet"
 import MapPolyline from "./map-polyline.vue"
 import MapPolygon from "./map-polygon.vue"
+import MapMarker from "./map-marker.vue"
 import type { PointTuple } from "leaflet"
 import { computed, ref } from "vue"
 import { useNewRegionStore } from "@/features/edit-region"
@@ -46,6 +52,7 @@ const { handleDraw } = newRegionStore
 
             <MapPolyline />
             <MapPolygon />
+            <MapMarker />
          </l-map>
       </ui-spacing>
    </ui-spacing>

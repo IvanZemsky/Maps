@@ -66,7 +66,7 @@ const { region } = storeToRefs(newRegionStore)
    position: sticky;
    top: 0;
    left: 0;
-   padding: 0.3rem 0;
+   padding: 0 0 0.3rem  0;
    background-color: var(--primary-contrast);
    border-radius: 0 0 0.3rem 0.3rem;
    z-index: 501;
@@ -78,7 +78,7 @@ const { region } = storeToRefs(newRegionStore)
 
 .scroll-area {
    overflow-y: scroll;
-   padding-right: 1rem;
+   padding-right: 0.5rem;
    flex: 1 1 auto;
 }
 
