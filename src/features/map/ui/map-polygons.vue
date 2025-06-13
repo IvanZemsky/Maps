@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useNewRegionStore } from "@/features/edit-region"
+import { useNewRegionStore } from "@/features/region"
 import { LPolygon } from "@vue-leaflet/vue-leaflet"
 
 const newRegionStore = useNewRegionStore()

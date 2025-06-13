@@ -126,11 +126,11 @@ export const useNewRegionStore = defineStore("region", () => {
 
    return {
       region,
+      isDrawing,
+      drawingKey,
       loadRegionFromFile,
       saveRegionToFile,
       drawingPolygon,
-      isDrawing,
-      drawingKey,
       setRegionName,
       setKeyName,
       createKey,

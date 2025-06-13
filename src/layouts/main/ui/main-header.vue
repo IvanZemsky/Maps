@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useNewRegionStore } from "@/features/edit-region"
+import { useNewRegionStore } from "@/features/region"
 import { formatDate } from "@/shared/lib"
-import { FileSelector } from "@/shared/ui"
 import { NavigationIcon } from "@/shared/ui/icons"
+import { ref } from "vue"
 
 const currentDate = formatDate(Date.now())
 
@@ -19,6 +19,8 @@ function handleLoadRegionFromFile(event: Event) {
       openControls()
    })
 }
+
+const selectedTemplate = ref()
 </script>
 
 <template>
@@ -32,7 +34,7 @@ function handleLoadRegionFromFile(event: Event) {
                   {{ regionStore.region?.name }}
                </div> -->
 
-               <FileSelector
+               <ui-file-picker
                   id="region-selector"
                   variant="ghost"
                   size="sm"
@@ -41,9 +43,22 @@ function handleLoadRegionFromFile(event: Event) {
                >
                   <template #start-icon><NavigationIcon /></template>
                   Select region
-               </FileSelector>
+               </ui-file-picker>
 
-               <ui-button size="sm" @click="openControls">New region</ui-button>
+               <ui-select
+                  class="preview-select"
+                  size="sm"
+                  v-model="selectedTemplate"
+                  placeholder="Templates"
+               >
+                  <ui-select-option value="syria" label="Syria" />
+                  <ui-select-option value="iran" label="Iran" />
+                  <ui-select-option value="india" label="India" />
+                  <ui-select-option value="israel" label="Israel" />
+                  <ui-select-option value="usa" label="USA" />
+               </ui-select>
+
+               <ui-button size="sm" @click="openControls">New</ui-button>
             </ui-spacing>
          </ui-spacing>
       </ui-wrapper>
@@ -68,5 +83,12 @@ function handleLoadRegionFromFile(event: Event) {
    font-weight: 500;
    border-radius: 0.5rem;
    padding: 0.4rem 0.6rem;
+}
+.preview-select {
+   width: 120px;
+}
+.preview-select :deep(.ui-select__options) {
+   top: calc(100% + 12px);
+   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
 </style>

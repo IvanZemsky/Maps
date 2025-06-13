@@ -6,11 +6,16 @@ import KeyCard from "./key-card.vue"
 const newRegionStore = useNewRegionStore()
 
 const { region } = storeToRefs(newRegionStore)
-
 </script>
 
 <template>
-   <ui-wrapper class="controls" v-if="newRegionStore.isDrawing" paddings="both">
+   <ui-wrapper
+      class="controls"
+      v-if="newRegionStore.isDrawing"
+      @click.stop
+      @wheel.stop
+      paddings="both"
+   >
       <div class="scroll-area">
          <ui-spacing class="content" vertical fill align="stretch" gap="sm">
             <ui-input
@@ -66,7 +71,7 @@ const { region } = storeToRefs(newRegionStore)
    position: sticky;
    top: 0;
    left: 0;
-   padding: 0 0 0.3rem  0;
+   padding: 0 0 0.3rem 0;
    background-color: var(--primary-contrast);
    border-radius: 0 0 0.3rem 0.3rem;
    z-index: 501;

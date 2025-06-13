@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { useNewRegionStore } from "@/features/edit-region"
+import { useNewRegionStore } from "@/features/region"
 import { LMarker } from "@vue-leaflet/vue-leaflet"
 import { getMarkerIcon } from "@/entities/region"
 
 const newRegionStore = useNewRegionStore()
-
 </script>
 
 <template>
