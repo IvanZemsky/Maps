@@ -2,10 +2,21 @@
 import { storeToRefs } from "pinia"
 import { useNewRegionStore } from "../model/store"
 import KeyCard from "./key-card.vue"
+import { inject, type Ref } from "vue"
+import type { PointTuple } from "leaflet"
 
 const newRegionStore = useNewRegionStore()
 
 const { region } = storeToRefs(newRegionStore)
+
+const mapCenter = inject<Ref<PointTuple | undefined>>("mapCenter")
+
+function setMapCenter() {
+   console.log(mapCenter?.value)
+   if (mapCenter?.value) {
+      newRegionStore.setMapCenter(mapCenter.value)
+   }
+}
 </script>
 
 <template>
@@ -27,6 +38,16 @@ const { region } = storeToRefs(newRegionStore)
             <ui-button size="sm" @click="newRegionStore.saveRegionToFile">
                Save region
             </ui-button>
+
+            <ui-button
+               @click="setMapCenter"
+               class="key-draw-control-btn"
+               size="sm"
+               variant="outlined"
+            >
+               Set map center
+            </ui-button>
+
             <div class="draw-btn-wrap">
                <ui-button
                   :disabled="!newRegionStore.drawingPolygon"
@@ -65,6 +86,7 @@ const { region } = storeToRefs(newRegionStore)
    box-sizing: border-box;
    display: flex;
    flex-direction: column;
+   cursor: default;
 }
 
 .draw-btn-wrap {

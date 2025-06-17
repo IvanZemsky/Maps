@@ -32,6 +32,7 @@ export const regionPolygonSchema = z.object({
 export const regionSchema = z.object({
    name: z.string(),
    keys: z.array(regionPolygonSchema),
+   center: latLngTupleSchema,
 })
 
 export type Region = z.infer<typeof regionSchema>

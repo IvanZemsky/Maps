@@ -8,9 +8,9 @@ import {
 } from "@/entities/region"
 import { useRegionFileManagerStore } from "./region-file-manager-store"
 
-import type { LeafletMouseEvent } from "leaflet"
+import type { LeafletMouseEvent, PointTuple } from "leaflet"
 import { defineStore } from "pinia"
-import { ref } from "vue"
+import { ref  } from "vue"
 
 export const useNewRegionStore = defineStore("region", () => {
    const loadStore = useRegionFileManagerStore()
@@ -61,6 +61,12 @@ export const useNewRegionStore = defineStore("region", () => {
       drawingPolygon.value = null
    }
 
+   function handleClick(event: LeafletMouseEvent) {
+      if (isDrawing.value) {
+         handleDraw(event)
+      }
+   }
+
    function handleDraw(event: LeafletMouseEvent) {
       if (drawingPolygon.value) {
          let latlngs = drawingPolygon.value.latlngs
@@ -68,6 +74,11 @@ export const useNewRegionStore = defineStore("region", () => {
          latlngs = [...latlngs, [event.latlng.lat, event.latlng.lng] as [number, number]]
          drawingPolygon.value.latlngs = latlngs
       }
+   }
+
+   function setMapCenter(center: PointTuple) {
+      region.value.center = center
+      console.log(region.value.center)
    }
 
    function setColor(id: number, color: string) {
@@ -137,11 +148,12 @@ export const useNewRegionStore = defineStore("region", () => {
       startDrawing,
       stopDrawing,
       setDrawingKey,
-      handleDraw,
+      handleClick,
       setColor,
       findKeyById,
       createPolygon,
       removePolygon,
       removeKey,
+      setMapCenter,
    }
 })
