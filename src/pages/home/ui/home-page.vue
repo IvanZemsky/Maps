@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useNewRegionStore } from "@/features/region"
-import NewRegionControls from "@/features/region/ui/new-region-controls.vue"
+import { useNewRegionStore, NewRegionControls } from "@/features/region"
 import {
    MapMain,
    MapControls,
@@ -10,10 +9,11 @@ import {
 } from "@/features/map"
 import { computed, onMounted, provide, ref } from "vue"
 import type { PointTuple } from "leaflet"
-import { DEFAULT_MAP_CENTER } from "@/entities/region/model/const"
+import { DEFAULT_MAP_CENTER } from "@/entities/region"
 
 const newRegionStore = useNewRegionStore()
 
+const region = computed(() => newRegionStore.region)
 const isDrawing = computed(() => newRegionStore.drawingPolygon !== null)
 
 const mapCenter = ref<PointTuple>()
@@ -21,7 +21,7 @@ const mapCenter = ref<PointTuple>()
 provide("mapCenter", mapCenter)
 
 onMounted(() => {
-   mapCenter.value = newRegionStore.region.center as PointTuple || DEFAULT_MAP_CENTER
+   mapCenter.value = (newRegionStore.region.center as PointTuple) || DEFAULT_MAP_CENTER
 })
 </script>
 
@@ -29,7 +29,7 @@ onMounted(() => {
    <map-main
       :class="{ 'cursor-pointer': isDrawing }"
       @click="newRegionStore.handleClick"
-      v-model:center="mapCenter"
+      v-model:region="region"
    >
       <NewRegionControls />
 

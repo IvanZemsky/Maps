@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type { LeafletEvent, LeafletMouseEvent, PointTuple } from "leaflet"
-import { inject, onMounted, ref, useTemplateRef, type TemplateRef } from "vue"
+import type { LeafletMouseEvent, PointTuple } from "leaflet"
+import { ref, useTemplateRef, watch } from "vue"
 import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet"
 import { MAP_CONFIG } from "../model/const"
+import type { Region } from "@/entities/region"
 import { DEFAULT_MAP_CENTER } from "@/entities/region/model/const"
 
-const zoom = ref(MAP_CONFIG.zoom) // in region's data
+const zoom = ref(MAP_CONFIG.zoom)
 
 const mapRef = useTemplateRef("map")
 
@@ -13,23 +14,20 @@ const emit = defineEmits<{
    (e: "click", event: LeafletMouseEvent): void
 }>()
 
-const currentCenter = defineModel<PointTuple>("center")
+const region = defineModel<Region>("region")
 
-const center = ref<PointTuple>(currentCenter.value || DEFAULT_MAP_CENTER)
+const currentCenter = ref<PointTuple>(DEFAULT_MAP_CENTER)
 
-function handleMoveEnd(event: LeafletEvent) {
-   if (mapRef.value) {
-      currentCenter.value = [
-         event.target.getCenter().lat,
-         event.target.getCenter().lng,
-      ] as PointTuple
+function handleMoveEnd() {
+   if (mapRef?.value?.leafletObject) {
+      const center = mapRef.value.leafletObject.getCenter()
+      currentCenter.value = [center.lat, center.lng]
    }
 }
 
-onMounted(() => {
-   if (mapRef.value) {
-      currentCenter.value = mapRef.value.center as PointTuple
-      console.log(currentCenter.value)
+watch(region, (newVal) => {
+   if (mapRef?.value?.leafletObject) {
+      mapRef.value.leafletObject.setView(newVal?.center as PointTuple, MAP_CONFIG.zoom)
    }
 })
 </script>
@@ -38,16 +36,17 @@ onMounted(() => {
    <ui-spacing class="map-wrap" vertical fill grow>
       <ui-spacing class="content" fill grow gap="none">
          <l-map
-            @moveend="handleMoveEnd"
+            v-if="region"
             ref="map"
             v-model:zoom="zoom"
-            v-model:center="center"
+            v-model:center="(region.center as PointTuple)"
             :useGlobalLeaflet="false"
             :options="{
                attributionControl: false,
                zoomControl: false,
             }"
             @click="emit('click', $event)"
+            @moveend="handleMoveEnd"
          >
             <l-tile-layer layer-type="base" v-bind="MAP_CONFIG.tile" />
             <slot />

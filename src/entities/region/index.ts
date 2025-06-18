@@ -16,6 +16,6 @@ export {
    getDefaultRegionKey,
    getDefaultRegionKeyPolygon,
    getMarkerIcon,
-} from "./model/helpers"
+} from "./lib/helpers"
 
-export { MARKER_ICONS } from "./model/const"
+export { MARKER_ICONS, DEFAULT_MAP_CENTER } from "./model/const"

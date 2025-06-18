@@ -1,6 +1,11 @@
 import L from "leaflet"
-import { DEFAULT_MAP_CENTER, MARKER_ICON_DIFFERENCE, MARKER_ICONS, MARKER_SIZE } from "./const"
-import type { MarkerType, Region, RegionKey, RegionKeyPolygon } from "./types"
+import {
+   DEFAULT_MAP_CENTER,
+   MARKER_ICON_DIFFERENCE,
+   MARKER_ICONS,
+   MARKER_SIZE,
+} from "../model/const"
+import type { MarkerType, Region, RegionKey, RegionKeyPolygon } from "../model/types"
 
 export function getDefaultRegion(): Region {
    const region: Region = {
