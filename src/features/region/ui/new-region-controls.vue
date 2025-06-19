@@ -5,11 +5,11 @@ import KeyCard from "./key-card.vue"
 import { inject, type Ref } from "vue"
 import type { PointTuple } from "leaflet"
 
+const mapCenter = inject<Ref<PointTuple | undefined>>("mapCenter")
+
 const newRegionStore = useNewRegionStore()
 
 const { region } = storeToRefs(newRegionStore)
-
-const mapCenter = inject<Ref<PointTuple | undefined>>("mapCenter")
 
 function setMapCenter() {
    console.log(mapCenter?.value)

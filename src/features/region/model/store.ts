@@ -10,10 +10,10 @@ import { useRegionFileManagerStore } from "./region-file-manager-store"
 
 import type { LeafletMouseEvent, PointTuple } from "leaflet"
 import { defineStore } from "pinia"
-import { ref  } from "vue"
+import { ref } from "vue"
 
 export const useNewRegionStore = defineStore("region", () => {
-   const loadStore = useRegionFileManagerStore()
+   const loadStore = useRegionFileManagerStore() // factory pattern?
 
    const region = ref<Region>(getDefaultRegion())
    const isDrawing = ref(false)
@@ -82,15 +82,12 @@ export const useNewRegionStore = defineStore("region", () => {
    }
 
    function setColor(id: number, color: string) {
-      region.value = {
-         ...region.value,
-         keys: region.value.keys.map((key) => {
-            if (key.id === id) {
-               return { ...key, color }
-            }
-            return key
-         }),
-      }
+      region.value.keys = region.value.keys.map((key) => {
+         if (key.id === id) {
+            return { ...key, color }
+         }
+         return key
+      })
    }
 
    function setDrawingKey(polygonId: number): RegionKey | undefined {
@@ -105,21 +102,15 @@ export const useNewRegionStore = defineStore("region", () => {
    }
 
    function removePolygon(id: number) {
-      region.value = {
-         ...region.value,
-         keys: region.value.keys.map((key) => ({
-            ...key,
-            polygons: key.polygons.filter((polygon) => polygon.id !== id),
-         })),
-      }
+      region.value.keys = region.value.keys.map((key) => ({
+         ...key,
+         polygons: key.polygons.filter((polygon) => polygon.id !== id),
+      }))
       stopDrawing()
    }
 
    function removeKey(id: number) {
-      region.value = {
-         ...region.value,
-         keys: region.value.keys.filter((key) => key.id !== id),
-      }
+      region.value.keys = region.value.keys.filter((key) => key.id !== id)
       stopDrawing()
    }
 

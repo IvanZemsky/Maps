@@ -55,8 +55,8 @@ export const useRegionFileManagerStore = defineStore("regions", () => {
                } else {
                   reject(result.error)
                }
-            } catch (_) {
-               reject(new Error("Failed to parse JSON"))
+            } catch (error) {
+               reject(new Error(`Failed to parse JSON: ${error}`))
             }
          }
 

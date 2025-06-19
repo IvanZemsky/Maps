@@ -34,8 +34,8 @@ onMounted(() => {
       <NewRegionControls />
 
       <MapControls />
-      <MapPolylines />
-      <MapPolygons />
+      <MapPolylines :drawing-polygon-id="newRegionStore.drawingPolygon?.id" />
+      <MapPolygons :drawing-polygon-id="newRegionStore.drawingPolygon?.id" />
       <MapMarkers />
    </map-main>
 </template>

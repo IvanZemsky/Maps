@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { LeafletMouseEvent, PointTuple } from "leaflet"
-import { ref, useTemplateRef, watch } from "vue"
+import { provide, ref, useTemplateRef, watch } from "vue"
 import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet"
 import { MAP_CONFIG } from "../model/const"
 import type { Region } from "@/entities/region"
-import { DEFAULT_MAP_CENTER } from "@/entities/region/model/const"
+import { DEFAULT_MAP_CENTER } from "@/entities/region"
 
 const zoom = ref(MAP_CONFIG.zoom)
 
@@ -18,18 +18,20 @@ const region = defineModel<Region>("region")
 
 const currentCenter = ref<PointTuple>(DEFAULT_MAP_CENTER)
 
+provide("region", region)
+
+watch(region, (newVal) => {
+   if (mapRef?.value?.leafletObject) {
+      mapRef.value.leafletObject.setView(newVal?.center as PointTuple)
+   }
+})
+
 function handleMoveEnd() {
    if (mapRef?.value?.leafletObject) {
       const center = mapRef.value.leafletObject.getCenter()
       currentCenter.value = [center.lat, center.lng]
    }
 }
-
-watch(region, (newVal) => {
-   if (mapRef?.value?.leafletObject) {
-      mapRef.value.leafletObject.setView(newVal?.center as PointTuple, MAP_CONFIG.zoom)
-   }
-})
 </script>
 
 <template>
@@ -39,7 +41,7 @@ watch(region, (newVal) => {
             v-if="region"
             ref="map"
             v-model:zoom="zoom"
-            v-model:center="(region.center as PointTuple)"
+            v-model:center="region.center as PointTuple"
             :useGlobalLeaflet="false"
             :options="{
                attributionControl: false,
@@ -49,6 +51,7 @@ watch(region, (newVal) => {
             @moveend="handleMoveEnd"
          >
             <l-tile-layer layer-type="base" v-bind="MAP_CONFIG.tile" />
+
             <slot />
          </l-map>
       </ui-spacing>

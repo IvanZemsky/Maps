@@ -30,10 +30,6 @@ const selectedTemplate = ref()
             <ui-spacing align="center" gap="sm">
                <p>{{ currentDate }}</p>
 
-               <!-- <div class="selected-region" v-if="regionStore.region">
-                  {{ regionStore.region?.name }}
-               </div> -->
-
                <ui-file-picker
                   id="region-selector"
                   variant="ghost"

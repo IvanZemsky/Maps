@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { useNewRegionStore } from "@/features/region"
 import { LMarker } from "@vue-leaflet/vue-leaflet"
-import { getMarkerIcon } from "@/entities/region"
+import { getMarkerIcon, type Region } from "@/entities/region"
+import { inject, type Ref } from "vue"
 
-const newRegionStore = useNewRegionStore()
+const region = inject<Ref<Region>>("region")
+
+if (!region?.value) {
+   throw new Error("Map region is not provided")
+}
 </script>
 
 <template>
-   <div v-for="key in newRegionStore.region.keys" :key="key.id">
+   <div v-for="key in region.keys" :key="key.id">
       <div v-for="marker in key.markers" :key="marker.id">
          <l-marker
             :id="marker.id"
