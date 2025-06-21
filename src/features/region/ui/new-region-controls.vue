@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia"
-import { useNewRegionStore } from "../model/store"
+import { useRegionStore } from "../model/store"
 import KeyCard from "./key-card.vue"
 import { inject, type Ref } from "vue"
 import type { PointTuple } from "leaflet"
 
 const mapCenter = inject<Ref<PointTuple | undefined>>("mapCenter")
 
-const newRegionStore = useNewRegionStore()
+const regionStore = useRegionStore()
 
-const { region } = storeToRefs(newRegionStore)
+const { region } = storeToRefs(regionStore)
 
 function setMapCenter() {
    if (mapCenter?.value) {
-      newRegionStore.setMapCenter(mapCenter.value)
+      regionStore.setMapCenter(mapCenter.value)
    }
 }
 </script>
@@ -21,8 +21,11 @@ function setMapCenter() {
 <template>
    <ui-wrapper
       class="controls"
-      v-if="newRegionStore.isDrawing"
+      v-if="regionStore.isDrawing"
       @click.stop
+      @mousedown.stop
+      @mouseup.stop
+      @mousemove.stop
       @wheel.stop
       paddings="both"
    >
@@ -34,7 +37,7 @@ function setMapCenter() {
                class="region-name-input"
                v-model="region.name"
             />
-            <ui-button size="sm" @click="newRegionStore.saveRegionToFile">
+            <ui-button size="sm" @click="regionStore.saveRegionToFile">
                Save region
             </ui-button>
 
@@ -49,8 +52,8 @@ function setMapCenter() {
 
             <div class="draw-btn-wrap">
                <ui-button
-                  :disabled="!newRegionStore.drawingPolygon"
-                  @click="newRegionStore.stopDrawing"
+                  :disabled="!regionStore.drawingPolygon"
+                  @click="regionStore.stopDrawing"
                   class="key-draw-control-btn"
                   size="sm"
                   variant="outlined"
@@ -60,13 +63,13 @@ function setMapCenter() {
             </div>
 
             <key-card
-               v-for="(key, index) in newRegionStore.region.keys"
+               v-for="(key, index) in regionStore.region.keys"
                :id="key.id"
                :key="key.id"
                :number="index + 1"
             />
 
-            <ui-button size="sm" @click="newRegionStore.createKey">Add key</ui-button>
+            <ui-button size="sm" @click="regionStore.createKey">Add key</ui-button>
          </ui-spacing>
       </div>
    </ui-wrapper>

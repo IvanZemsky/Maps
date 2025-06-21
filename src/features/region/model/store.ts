@@ -1,167 +1,51 @@
-import {
-   getDefaultRegion,
-   getDefaultRegionKey,
-   getDefaultRegionKeyPolygon,
-   type Region,
-   type RegionKey,
-   type RegionKeyPolygon,
-} from "@/entities/region"
+import { getDefaultRegion, type Region } from "@/entities/region"
 
-import type { LeafletMouseEvent, PointTuple } from "leaflet"
-import { defineStore } from "pinia"
+import type { PointTuple } from "leaflet"
+import { defineStore, storeToRefs } from "pinia"
 import { ref } from "vue"
 import { createRegionFileManagerStore } from "./region-file-manager-store"
+import { createKeyDrawingStore } from "./key-drawing-store"
 
-export const useNewRegionStore = defineStore("region", () => {
+export const useRegionStore = defineStore("region", () => {
    const region = ref<Region>(getDefaultRegion())
-   const isDrawing = ref(false)
-   const drawingPolygon = ref<RegionKeyPolygon | null>(null)
-   const drawingKey = ref<RegionKey>(region.value.keys[0])
 
+   const drawingStore = createKeyDrawingStore(region)()
    const loadStore = createRegionFileManagerStore(region)()
+   
+   const {drawingKey, drawingPolygon, isDrawing} = storeToRefs(drawingStore)
 
    function saveRegionToFile() {
       loadStore.saveRegionToFile(region.value)
-   }
-
-   function createKey() {
-      const newKey = getDefaultRegionKey()
-      newKey.polygons.push(getDefaultRegionKeyPolygon())
-      region.value.keys.push(newKey)
-   }
-
-   function setPolygonWeight(keyId: number, polygonId: number, weight: number) {
-      const key = findKeyById(keyId)
-      key.polygons = key.polygons.map((polygon) => {
-         if (polygon.id === polygonId) {
-            return {
-               ...polygon,
-               weight,
-            }
-         }
-         return polygon
-      })
    }
 
    function setRegionName(name: string) {
       region.value.name = name
    }
 
-   function setKeyName(keyId: number, name: string) {
-      const key = findKeyById(keyId)
-      key.name = name
-   }
-
-   function startDrawing(keyId: number, polygonId: number) {
-      drawingKey.value = findKeyById(keyId)
-      const polygon = findPolygonByDrawingId(polygonId)
-      if (polygon) {
-         drawingPolygon.value = polygon
-      }
-   }
-
-   function stopDrawing() {
-      drawingPolygon.value = null
-   }
-
-   function handleClick(event: LeafletMouseEvent) {
-      if (isDrawing.value) {
-         handleDraw(event)
-      }
-   }
-
-   function handleDraw(event: LeafletMouseEvent) {
-      if (drawingPolygon.value) {
-         let latlngs = drawingPolygon.value.latlngs
-
-         latlngs = [...latlngs, [event.latlng.lat, event.latlng.lng] as [number, number]]
-         drawingPolygon.value.latlngs = latlngs
-      }
-   }
-
    function setMapCenter(center: PointTuple) {
       region.value.center = center
-      console.log(region.value.center)
-   }
-
-   function setColor(id: number, color: string) {
-      region.value.keys = region.value.keys.map((key) => {
-         if (key.id === id) {
-            return { ...key, color }
-         }
-         return key
-      })
-   }
-
-   function setDrawingKey(polygonId: number): RegionKey | undefined {
-      const key = findKeyById(polygonId)
-      drawingKey.value = key
-      return key
-   }
-
-   function createPolygon(id: number) {
-      const key = findKeyById(id)
-      key.polygons.push(getDefaultRegionKeyPolygon())
-   }
-
-   function removePolygon(id: number) {
-      region.value.keys = region.value.keys.map((key) => ({
-         ...key,
-         polygons: key.polygons.filter((polygon) => polygon.id !== id),
-      }))
-      stopDrawing()
-   }
-
-   function removeKey(id: number) {
-      region.value.keys = region.value.keys.filter((key) => key.id !== id)
-      stopDrawing()
-   }
-
-   function findKeyById(id: number) {
-      const key = region.value.keys.find((key) => key.id === id)
-      if (!key) {
-         throw new Error("Key not found")
-      }
-      return key
-   }
-
-   function findKeyPolygonById(keyId: number, polygonId: number) {
-      const key = region.value.keys.find((key) => key.id === keyId)
-      if (!key) {
-         throw new Error("Key not found")
-      }
-      const polygon = key.polygons.find((polygon) => polygon.id === polygonId)
-      if (!polygon) {
-         throw new Error("Polygon not found")
-      }
-      return polygon
-   }
-
-   function findPolygonByDrawingId(id: number) {
-      return drawingKey.value.polygons.find((polygon) => polygon.id === id)
    }
 
    return {
       region,
+      setMapCenter,
+      saveRegionToFile,
+      setRegionName,
+      loadRegionFromFile: loadStore.loadRegionFromFile,
       isDrawing,
       drawingKey,
-      loadRegionFromFile: loadStore.loadRegionFromFile,
-      saveRegionToFile,
       drawingPolygon,
-      setRegionName,
-      setPolygonWeight,
-      setKeyName,
-      createKey,
-      startDrawing,
-      stopDrawing,
-      setDrawingKey,
-      handleClick,
-      setColor,
-      findKeyById,
-      findKeyPolygonById,
-      createPolygon,
-      removePolygon,
-      removeKey,
-      setMapCenter,
+      setPolygonWeight: drawingStore.setPolygonWeight,
+      setKeyName: drawingStore.setKeyName,
+      createKey: drawingStore.createKey,
+      startDrawing: drawingStore.startDrawing,
+      stopDrawing: drawingStore.stopDrawing,
+      handleDraw: drawingStore.handleDraw,
+      removePolygon: drawingStore.removePolygon,
+      createPolygon: drawingStore.createPolygon,
+      removeKey: drawingStore.removeKey,
+      findKeyById: drawingStore.findKeyById,
+      findKeyPolygonById: drawingStore.findKeyPolygonById,
+      findPolygonByDrawingId: drawingStore.findPolygonByDrawingId,
    }
 })

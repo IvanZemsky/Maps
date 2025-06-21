@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import type { RegionKeyPolygon } from "@/entities/region"
-import { useNewRegionStore } from "../model/store"
+import { useRegionStore } from "../model/store"
 import { CloseOutlined } from "@vicons/antd"
-import { computed, ref, type Ref } from "vue"
+import { ref, type Ref } from "vue"
 
-const regionStore = useNewRegionStore()
+const regionStore = useRegionStore()
 
 const { keyId, polygon, number } = defineProps<{
    keyId: number
    polygon: Ref<RegionKeyPolygon>
    number: number
 }>()
-
-const emit = defineEmits(["update-weight"])
 
 const polygonRef = ref(polygon.value)
 
@@ -77,9 +75,9 @@ button.remove-polygon-btn svg {
 button.key-draw-control-btn:disabled {
    background-color: var(--neutral-main);
 }
-:deep(.ui-input).polygon-weight-input input{
-  width: 30px;
-  padding: 0.25rem;
-  text-align: center;
+:deep(.ui-input).polygon-weight-input input {
+   width: 30px;
+   padding: 0.25rem;
+   text-align: center;
 }
 </style>

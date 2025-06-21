@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { useNewRegionStore } from "@/features/region"
+import { useRegionStore } from "@/features/region"
 import { formatDate } from "@/shared/lib"
 import { NavigationIcon } from "@/shared/ui/icons"
 import { ref } from "vue"
 
 const currentDate = formatDate(Date.now())
 
-const newRegionStore = useNewRegionStore()
+const regionStore = useRegionStore()
 
-const { loadRegionFromFile } = newRegionStore
+const { loadRegionFromFile } = regionStore
 
 function openControls() {
-   newRegionStore.isDrawing = true
+   regionStore.isDrawing = true
 }
 
 function handleLoadRegionFromFile(event: Event) {
