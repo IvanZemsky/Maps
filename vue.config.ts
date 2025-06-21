@@ -1,3 +1,3 @@
 export default {
-  publicPath: '/PMaps/',
+  publicPath: '/Maps/',
 }
