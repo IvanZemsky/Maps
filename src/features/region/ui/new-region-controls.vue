@@ -12,7 +12,6 @@ const newRegionStore = useNewRegionStore()
 const { region } = storeToRefs(newRegionStore)
 
 function setMapCenter() {
-   console.log(mapCenter?.value)
    if (mapCenter?.value) {
       newRegionStore.setMapCenter(mapCenter.value)
    }

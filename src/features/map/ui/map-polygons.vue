@@ -26,7 +26,7 @@ if (!region?.value) {
             :id="polygon.id"
             :lat-lngs="polygon.latlngs"
             :color="key.color"
-            :weight="key.weight"
+            :weight="polygon.weight"
          />
       </div>
    </div>

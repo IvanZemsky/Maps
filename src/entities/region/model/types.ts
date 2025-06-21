@@ -18,13 +18,13 @@ export const regionKeyMarkerSchema = z.object({
 export const regionKeyPolygonSchema = z.object({
    id: z.number(),
    latlngs: z.array(latLngTupleSchema),
+   weight: z.number(),
 })
 
 export const regionPolygonSchema = z.object({
    id: z.number(),
    name: z.string(),
    color: z.string(),
-   weight: z.number(),
    polygons: z.array(regionKeyPolygonSchema),
    markers: z.array(regionKeyMarkerSchema),
 })

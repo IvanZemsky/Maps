@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import { useNewRegionStore } from "../model/store"
 import KeyCardPolygon from "./key-card-polygon.vue"
 
@@ -28,7 +28,7 @@ function handleCreatePolygon() {
             v-for="(polygon, index) in key.polygons"
             :key="polygon.id"
             :keyId="id"
-            :polygon="polygon"
+            :polygon="ref(polygon)"
             :number="index + 1"
          />
          <ui-button size="sm" @click="handleCreatePolygon">Add polygon</ui-button>

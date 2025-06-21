@@ -2,21 +2,26 @@
 import type { RegionKeyPolygon } from "@/entities/region"
 import { useNewRegionStore } from "../model/store"
 import { CloseOutlined } from "@vicons/antd"
+import { computed, ref, type Ref } from "vue"
 
-const newRegionStore = useNewRegionStore()
+const regionStore = useNewRegionStore()
 
 const { keyId, polygon, number } = defineProps<{
    keyId: number
-   polygon: RegionKeyPolygon
+   polygon: Ref<RegionKeyPolygon>
    number: number
 }>()
 
+const emit = defineEmits(["update-weight"])
+
+const polygonRef = ref(polygon.value)
+
 function handleRemovePolygon() {
-   newRegionStore.removePolygon(polygon.id)
+   regionStore.removePolygon(polygon.value.id)
 }
 
 function handleDraw() {
-   newRegionStore.startDrawing(keyId, polygon.id)
+   regionStore.startDrawing(keyId, polygon.value.id)
 }
 </script>
 
@@ -24,13 +29,13 @@ function handleDraw() {
    <ui-spacing
       :class="[
          'polygon-card',
-         { active: newRegionStore.drawingPolygon?.id === polygon.id },
+         { active: regionStore.drawingPolygon?.id === polygon.value.id },
       ]"
       align="center"
       gap="sm"
    >
       <ui-button
-         :disabled="newRegionStore.drawingPolygon?.id === polygon.id"
+         :disabled="regionStore.drawingPolygon?.id === polygon.value.id"
          @click="handleDraw"
          class="key-draw-control-btn"
          size="sm"
@@ -38,6 +43,14 @@ function handleDraw() {
       >
          Draw #{{ number }}
       </ui-button>
+      <ui-input
+         class="polygon-weight-input"
+         size="sm"
+         v-model.number="polygonRef.weight"
+         type="number"
+         min="0"
+         max="5"
+      />
       <ui-button
          class="key-draw-control-btn remove-polygon-btn"
          size="sm"
@@ -63,5 +76,10 @@ button.remove-polygon-btn svg {
 }
 button.key-draw-control-btn:disabled {
    background-color: var(--neutral-main);
+}
+:deep(.ui-input).polygon-weight-input input{
+  width: 30px;
+  padding: 0.25rem;
+  text-align: center;
 }
 </style>

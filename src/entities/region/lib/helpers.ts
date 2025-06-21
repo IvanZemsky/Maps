@@ -23,7 +23,6 @@ export function getDefaultRegionKey(): RegionKey {
       id: Date.now(),
       name: "",
       color: "#000000",
-      weight: 0,
       polygons: [],
       markers: [],
    }
@@ -33,6 +32,7 @@ export function getDefaultRegionKeyPolygon(): RegionKeyPolygon {
    return {
       id: Date.now() + 1,
       latlngs: [],
+      weight: 0,
    }
 }
 
@@ -41,7 +41,7 @@ export function getMarkerIcon(
    markerSize: number = MARKER_SIZE,
    iconMarkerDifference: number = MARKER_ICON_DIFFERENCE,
 ) {
-   const iconAnchorSize = markerSize / 2
+   const iconAnchorSize = markerSize / 2 // to const
    const iconSize = markerSize - iconMarkerDifference
 
    return L.divIcon({

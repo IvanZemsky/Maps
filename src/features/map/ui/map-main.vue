@@ -15,15 +15,16 @@ const emit = defineEmits<{
 }>()
 
 const region = defineModel<Region>("region")
+provide("region", region)
 
 const currentCenter = ref<PointTuple>(DEFAULT_MAP_CENTER)
-
-provide("region", region)
+const regionCenter = ref(region.value?.center || DEFAULT_MAP_CENTER)
 
 watch(region, (newVal) => {
    if (mapRef?.value?.leafletObject) {
       mapRef.value.leafletObject.setView(newVal?.center as PointTuple)
    }
+   console.log(region)
 })
 
 function handleMoveEnd() {
@@ -41,7 +42,7 @@ function handleMoveEnd() {
             v-if="region"
             ref="map"
             v-model:zoom="zoom"
-            v-model:center="region.center as PointTuple"
+            v-model:center="regionCenter as PointTuple"
             :useGlobalLeaflet="false"
             :options="{
                attributionControl: false,
