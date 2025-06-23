@@ -18,6 +18,8 @@ const region = defineModel<Region>("region")
 provide("region", region)
 
 const currentCenter = ref<PointTuple>(DEFAULT_MAP_CENTER)
+provide("currentCenter", currentCenter)
+
 const regionCenter = ref(region.value?.center || DEFAULT_MAP_CENTER)
 
 watch(region, (newVal) => {
@@ -53,7 +55,6 @@ function handleMoveEnd() {
             <l-tile-layer layer-type="base" v-bind="MAP_CONFIG.tile" />
 
             <slot />
-
          </l-map>
       </ui-spacing>
    </ui-spacing>

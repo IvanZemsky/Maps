@@ -10,6 +10,7 @@ const region = useInject<Ref<Region>>("region")
 <template>
    <div v-for="marker in region.markers" :key="marker.id">
       <l-marker
+         v-if="marker.latlngs"
          :id="marker.id"
          :lat-lng="marker.latlngs"
          :icon="getMarkerIcon({ type: marker.type, color: marker.color }) as any"

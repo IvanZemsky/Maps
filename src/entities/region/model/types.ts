@@ -7,12 +7,13 @@ const latLngTupleSchema = z.union([
 
 export const MARKER_TYPES = {
    battle: "battle",
+   none: "none",
 } as const
 
 export const regionKeyMarkerSchema = z.object({
    id: z.number(),
    keyId: z.number().nullable(),
-   latlngs: latLngTupleSchema,
+   latlngs: latLngTupleSchema.nullable(),
    type: z.enum(Object.values(MARKER_TYPES)),
    datetime: z.iso.datetime(),
    color: z.string(),

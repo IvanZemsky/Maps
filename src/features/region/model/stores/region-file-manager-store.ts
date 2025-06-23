@@ -21,11 +21,11 @@ export function createRegionFileManagerStore(region: Ref<Region>) {
          }
       }
 
-      function saveRegionToFile(region: Region) {
-         const jsonStr = JSON.stringify(region, null, 2)
+      function saveRegionToFile() {
+         const jsonStr = JSON.stringify(region.value, null, 2)
          const blob = new Blob([jsonStr], { type: "application/json" })
          const url = URL.createObjectURL(blob)
-         applyDownloadLink(url, getFileName(region.name))
+         applyDownloadLink(url, getFileName(region.value.name))
          URL.revokeObjectURL(url)
       }
 

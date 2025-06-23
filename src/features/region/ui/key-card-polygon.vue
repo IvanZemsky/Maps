@@ -76,7 +76,7 @@ button.key-draw-control-btn:disabled {
    background-color: var(--neutral-main);
 }
 :deep(.ui-input).polygon-weight-input input {
-   width: 30px;
+   width: 40px;
    padding: 0.25rem;
    text-align: center;
 }

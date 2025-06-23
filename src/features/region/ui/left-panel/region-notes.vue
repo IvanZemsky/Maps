@@ -5,6 +5,7 @@ import {
    useLeftPanelStore,
    type LeftPanelType,
 } from "../../model/stores/left-panel-store"
+import RegionMarker from "./region-marker.vue"
 
 const type: LeftPanelType = "notes"
 
@@ -13,14 +14,34 @@ const regionStore = useRegionStore()
 const leftPanelStore = useLeftPanelStore()
 
 const { region } = storeToRefs(regionStore)
+
 </script>
 
 <template>
-   <div v-if="leftPanelStore.isOpened(type)">
-      <div v-for="marker in region.markers" :key="marker.id">
-         <p>{{ marker.description }}</p>
-      </div>
-   </div>
+   <ui-spacing
+      class="content"
+      align="stretch"
+      vertical
+      fill
+      gap="sm"
+      v-if="leftPanelStore.isOpened(type)"
+   >
+      <ui-button size="sm" @click="regionStore.markers.add">Add note</ui-button>
+
+      <ui-spacing v-if="region.markers.length" vertical fill align="stretch" gap="sm">
+         <RegionMarker
+            v-for="marker in region.markers"
+            :key="marker.id"
+            :marker="marker"
+         />
+      </ui-spacing>
+
+      <p v-else>No notes</p>
+   </ui-spacing>
 </template>
 
-<style scoped></style>
+<style scoped>
+.ui-textarea.size-md.note-textarea :deep(textarea) {
+   font-size: 0.8rem;
+}
+</style>

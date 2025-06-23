@@ -6,7 +6,7 @@ import {
 import { storeToRefs } from "pinia"
 import { useRegionStore } from "../../model/stores/store"
 
-const type: LeftPanelType = "notes"
+const type: LeftPanelType = "keys"
 
 const regionStore = useRegionStore()
 const leftPanelStore = useLeftPanelStore()
@@ -19,5 +19,3 @@ const { region } = storeToRefs(regionStore)
       <p>keys</p>
    </div>
 </template>
-
-<style scoped></style>

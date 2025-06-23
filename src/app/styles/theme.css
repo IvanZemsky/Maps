@@ -16,8 +16,9 @@ a:visited {
    color: inherit;
 }
 
-.leaflet-top.leaflet-right{
-  top: 0;
+div.leaflet-top.leaflet-right{
+  bottom: 0;
+  top: unset;
   left: 50%;
   right: unset;
   transform: translateX(-50%);

@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useLeftPanelStore, useRegionStore } from "@/features/region"
+import { useRegionStore } from "@/features/region"
 import { formatDate } from "@/shared/lib"
 import { NavigationIcon } from "@/shared/ui/icons"
 import CompassOutlined from "@vicons/antd/CompassOutlined"
 import ProfileOutlined from "@vicons/antd/ProfileOutlined"
 import { ref } from "vue"
+import TabBtn from "./tab-btn.vue"
 
 const currentDate = formatDate(Date.now())
 
 const regionStore = useRegionStore()
-const leftPanelStore = useLeftPanelStore()
 
 const selectedTemplate = ref()
 </script>
@@ -28,7 +28,7 @@ const selectedTemplate = ref()
                      variant="ghost"
                      size="sm"
                      accept=".json"
-                     @change="regionStore.loadRegionFromFile"
+                     @change="regionStore.fileManager.loadRegionFromFile"
                   >
                      <template #start-icon><NavigationIcon /></template>
                      Select region
@@ -54,20 +54,8 @@ const selectedTemplate = ref()
 
             <ui-spacing class="header-right">
                <ui-spacing align="center" gap="sm">
-                  <ui-button
-                     class="right-btn"
-                     @click="() => leftPanelStore.open('notes')"
-                     variant="ghost"
-                  >
-                     <profile-outlined />
-                  </ui-button>
-                  <ui-button
-                     class="right-btn"
-                     @click="() => leftPanelStore.open('keys')"
-                     variant="ghost"
-                  >
-                     <compass-outlined />
-                  </ui-button>
+                  <TabBtn type="notes"><profile-outlined /></TabBtn>
+                  <TabBtn type="keys"><compass-outlined /></TabBtn>
                </ui-spacing>
             </ui-spacing>
          </ui-spacing>
@@ -100,15 +88,5 @@ const selectedTemplate = ref()
 .preview-select :deep(.ui-select__options) {
    top: calc(100% + 12px);
    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-}
-:deep(button.ui-button:has(svg:only-child).size-md).right-btn {
-   padding: 0.4rem;
-}
-:deep(button.ui-button:has(svg:only-child).size-md) svg {
-   width: 1.2rem;
-   height: 1.2rem;
-}
-:deep(button.ui-button).right-btn.active {
-   border-color: var(--primary-main);
 }
 </style>

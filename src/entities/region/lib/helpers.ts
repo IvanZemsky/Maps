@@ -5,7 +5,12 @@ import {
    MARKER_ICONS,
    MARKER_SIZE,
 } from "../model/const"
-import type { MARKER_TYPES, Region, RegionKey, RegionKeyPolygon } from "../model/types"
+import {
+   MARKER_TYPES,
+   type Region,
+   type RegionKey,
+   type RegionKeyPolygon,
+} from "../model/types"
 
 export function getDefaultRegion(): Region {
    const region: Region = {
@@ -33,6 +38,18 @@ export function getDefaultRegionKeyPolygon(): RegionKeyPolygon {
       id: Date.now() + 1,
       latlngs: [],
       weight: 0,
+   }
+}
+
+export function getDefaltMarker() {
+   return {
+      id: Date.now(),
+      keyId: null,
+      latlngs: null,
+      type: "none" as keyof typeof MARKER_TYPES,
+      datetime: "",
+      color: "grey",
+      description: "",
    }
 }
 

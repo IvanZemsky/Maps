@@ -8,4 +8,5 @@ export const DEFAULT_MAP_CENTER: PointTuple = [52.05, 14.70]
 
 export const MARKER_ICONS = {
    [MARKER_TYPES.battle]: BattleIcon,
+   [MARKER_TYPES.none]: BattleIcon,
 }

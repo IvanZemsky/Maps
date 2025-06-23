@@ -12,32 +12,27 @@ export const useRegionStore = defineStore("region", () => {
 
    const keyStore = createKeyStore(region)()
 
-   const loadStore = createRegionFileManagerStore(region)()
+   const fileManagerStore = createRegionFileManagerStore(region)()
    const markersStore = createMarkersStore(region)()
 
-  function reset() {
-    region.value = getDefaultRegion()
-  }
-
-   function saveToFile() {
-      loadStore.saveRegionToFile(region.value)
+   function reset() {
+      region.value = getDefaultRegion()
    }
 
    function setName(name: string) {
       region.value.name = name
    }
 
-   function setMapCenter(center: PointTuple) {
+   function setCenter(center: PointTuple) {
       region.value.center = center
    }
 
    return {
       region,
-      setMapCenter,
-      saveToFile,
+      setCenter,
       setName,
       reset,
-      loadRegionFromFile: loadStore.loadRegionFromFile,
+      fileManager: fileManagerStore,
       keys: keyStore,
       markers: markersStore,
    }

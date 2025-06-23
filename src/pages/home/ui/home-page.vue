@@ -12,7 +12,7 @@ import {
    MapPolygons,
    MapMarkers,
 } from "@/features/map"
-import { computed, onMounted, provide, ref } from "vue"
+import { computed, onMounted, ref } from "vue"
 import type { PointTuple } from "leaflet"
 import { DEFAULT_MAP_CENTER } from "@/entities/region"
 import { RegionKeys, RegionNotes } from "@/features/region"
@@ -24,8 +24,6 @@ const region = computed(() => regionStore.region)
 const isDrawing = computed(() => regionStore.keys.drawingPolygon !== null)
 const openedLeftPanelType = computed(() => leftPanelStore.opened)
 const mapCenter = ref<PointTuple>()
-
-provide("mapCenter", mapCenter)
 
 onMounted(() => {
    mapCenter.value = (regionStore.region.center as PointTuple) || DEFAULT_MAP_CENTER
@@ -39,7 +37,7 @@ onMounted(() => {
       v-model:region="region"
    >
       <RegionControls />
-      
+
       <LeftPanel v-if="openedLeftPanelType">
          <RegionKeys />
          <RegionNotes />
