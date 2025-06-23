@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia"
-import { useRegionStore } from "../model/store"
+import { useRegionStore } from "../model/stores/store"
 import KeyCard from "./key-card.vue"
-import { inject, type Ref } from "vue"
+import { type Ref } from "vue"
 import type { PointTuple } from "leaflet"
+import { useInject } from "@/shared/lib"
 
-const mapCenter = inject<Ref<PointTuple | undefined>>("mapCenter")
+const mapCenter = useInject<Ref<PointTuple>>("mapCenter")
 
 const regionStore = useRegionStore()
 
@@ -21,7 +22,6 @@ function setMapCenter() {
 <template>
    <ui-wrapper
       class="controls"
-      v-if="regionStore.isDrawing"
       @click.stop
       @mousedown.stop
       @mouseup.stop
@@ -37,9 +37,7 @@ function setMapCenter() {
                class="region-name-input"
                v-model="region.name"
             />
-            <ui-button size="sm" @click="regionStore.saveRegionToFile">
-               Save region
-            </ui-button>
+            <ui-button size="sm" @click="regionStore.saveToFile">Save region</ui-button>
 
             <ui-button
                @click="setMapCenter"
@@ -52,8 +50,8 @@ function setMapCenter() {
 
             <div class="draw-btn-wrap">
                <ui-button
-                  :disabled="!regionStore.drawingPolygon"
-                  @click="regionStore.stopDrawing"
+                  :disabled="!regionStore.keys.drawingPolygon"
+                  @click="regionStore.keys.stopDrawing"
                   class="key-draw-control-btn"
                   size="sm"
                   variant="outlined"
@@ -69,7 +67,7 @@ function setMapCenter() {
                :number="index + 1"
             />
 
-            <ui-button size="sm" @click="regionStore.createKey">Add key</ui-button>
+            <ui-button size="sm" @click="regionStore.keys.create">Add key</ui-button>
          </ui-spacing>
       </div>
    </ui-wrapper>
@@ -80,7 +78,7 @@ function setMapCenter() {
    position: absolute;
    left: 0;
    bottom: 0;
-   width: 340px;
+   width: 300px;
    background-color: var(--primary-contrast);
    height: 100%;
    padding: 0rem 0 1rem 1rem;

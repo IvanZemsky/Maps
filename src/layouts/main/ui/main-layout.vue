@@ -7,7 +7,9 @@ import MainHeader from "./main-header.vue"
    <ui-spacing class="layout" vertical gap="none">
       <MainHeader/>
       <ui-spacing class="main" as="main" align="stretch" grow fill>
+
          <router-view />
+
       </ui-spacing>
    </ui-spacing>
 </template>

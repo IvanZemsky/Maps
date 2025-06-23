@@ -1,24 +1,15 @@
 <script setup lang="ts">
-import { useRegionStore } from "@/features/region"
+import { useLeftPanelStore, useRegionStore } from "@/features/region"
 import { formatDate } from "@/shared/lib"
 import { NavigationIcon } from "@/shared/ui/icons"
+import CompassOutlined from "@vicons/antd/CompassOutlined"
+import ProfileOutlined from "@vicons/antd/ProfileOutlined"
 import { ref } from "vue"
 
 const currentDate = formatDate(Date.now())
 
 const regionStore = useRegionStore()
-
-const { loadRegionFromFile } = regionStore
-
-function openControls() {
-   regionStore.isDrawing = true
-}
-
-function handleLoadRegionFromFile(event: Event) {
-   loadRegionFromFile(event).then(() => {
-      openControls()
-   })
-}
+const leftPanelStore = useLeftPanelStore()
 
 const selectedTemplate = ref()
 </script>
@@ -26,35 +17,58 @@ const selectedTemplate = ref()
 <template>
    <header class="header">
       <ui-wrapper>
-         <ui-spacing class="header-left">
-            <ui-spacing align="center" gap="sm">
-               <p>{{ currentDate }}</p>
+         <ui-spacing align="center" justify="space-between" fill>
+            <ui-spacing class="header-left">
+               <ui-spacing align="center" gap="sm">
+                  <p>{{ currentDate }}</p>
 
-               <ui-file-picker
-                  id="region-selector"
-                  variant="ghost"
-                  size="sm"
-                  accept=".json"
-                  @change="handleLoadRegionFromFile"
-               >
-                  <template #start-icon><NavigationIcon /></template>
-                  Select region
-               </ui-file-picker>
+                  <!-- to features -->
+                  <ui-file-picker
+                     id="region-selector"
+                     variant="ghost"
+                     size="sm"
+                     accept=".json"
+                     @change="regionStore.loadRegionFromFile"
+                  >
+                     <template #start-icon><NavigationIcon /></template>
+                     Select region
+                  </ui-file-picker>
 
-               <ui-select
-                  class="preview-select"
-                  size="sm"
-                  v-model="selectedTemplate"
-                  placeholder="Templates"
-               >
-                  <ui-select-option value="syria" label="Syria" />
-                  <ui-select-option value="iran" label="Iran" />
-                  <ui-select-option value="india" label="India" />
-                  <ui-select-option value="israel" label="Israel" />
-                  <ui-select-option value="usa" label="USA" />
-               </ui-select>
+                  <!-- to const -->
+                  <ui-select
+                     class="preview-select"
+                     size="sm"
+                     v-model="selectedTemplate"
+                     placeholder="Templates"
+                  >
+                     <ui-select-option value="syria" label="Syria" />
+                     <ui-select-option value="iran" label="Iran" />
+                     <ui-select-option value="india" label="India" />
+                     <ui-select-option value="israel" label="Israel" />
+                     <ui-select-option value="usa" label="USA" />
+                  </ui-select>
 
-               <ui-button size="sm" @click="openControls">New</ui-button>
+                  <ui-button size="sm" @click="regionStore.reset">New</ui-button>
+               </ui-spacing>
+            </ui-spacing>
+
+            <ui-spacing class="header-right">
+               <ui-spacing align="center" gap="sm">
+                  <ui-button
+                     class="right-btn"
+                     @click="() => leftPanelStore.open('notes')"
+                     variant="ghost"
+                  >
+                     <profile-outlined />
+                  </ui-button>
+                  <ui-button
+                     class="right-btn"
+                     @click="() => leftPanelStore.open('keys')"
+                     variant="ghost"
+                  >
+                     <compass-outlined />
+                  </ui-button>
+               </ui-spacing>
             </ui-spacing>
          </ui-spacing>
       </ui-wrapper>
@@ -86,5 +100,15 @@ const selectedTemplate = ref()
 .preview-select :deep(.ui-select__options) {
    top: calc(100% + 12px);
    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+:deep(button.ui-button:has(svg:only-child).size-md).right-btn {
+   padding: 0.4rem;
+}
+:deep(button.ui-button:has(svg:only-child).size-md) svg {
+   width: 1.2rem;
+   height: 1.2rem;
+}
+:deep(button.ui-button).right-btn.active {
+   border-color: var(--primary-main);
 }
 </style>

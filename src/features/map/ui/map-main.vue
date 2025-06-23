@@ -24,7 +24,6 @@ watch(region, (newVal) => {
    if (mapRef?.value?.leafletObject) {
       mapRef.value.leafletObject.setView(newVal?.center as PointTuple)
    }
-   console.log(region)
 })
 
 function handleMoveEnd() {
@@ -42,7 +41,7 @@ function handleMoveEnd() {
             v-if="region"
             ref="map"
             v-model:zoom="zoom"
-            v-model:center="regionCenter as PointTuple"
+            v-model:center="(regionCenter as PointTuple)"
             :useGlobalLeaflet="false"
             :options="{
                attributionControl: false,
@@ -54,6 +53,7 @@ function handleMoveEnd() {
             <l-tile-layer layer-type="base" v-bind="MAP_CONFIG.tile" />
 
             <slot />
+
          </l-map>
       </ui-spacing>
    </ui-spacing>

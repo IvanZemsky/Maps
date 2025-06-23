@@ -1,18 +1,22 @@
-import { z } from "zod"
+import { z } from "zod/v4"
 
 const latLngTupleSchema = z.union([
    z.tuple([z.number(), z.number()]),
    z.tuple([z.number(), z.number(), z.number()]),
 ])
 
-export enum MarkerType {
-   BATTLE = "battle",
-}
+export const MARKER_TYPES = {
+   battle: "battle",
+} as const
 
 export const regionKeyMarkerSchema = z.object({
    id: z.number(),
+   keyId: z.number().nullable(),
    latlngs: latLngTupleSchema,
-   type: z.nativeEnum(MarkerType),
+   type: z.enum(Object.values(MARKER_TYPES)),
+   datetime: z.iso.datetime(),
+   color: z.string(),
+   description: z.string(),
 })
 
 export const regionKeyPolygonSchema = z.object({
@@ -26,13 +30,13 @@ export const regionPolygonSchema = z.object({
    name: z.string(),
    color: z.string(),
    polygons: z.array(regionKeyPolygonSchema),
-   markers: z.array(regionKeyMarkerSchema),
 })
 
 export const regionSchema = z.object({
    name: z.string(),
    keys: z.array(regionPolygonSchema),
    center: latLngTupleSchema,
+   markers: z.array(regionKeyMarkerSchema),
 })
 
 export type Region = z.infer<typeof regionSchema>

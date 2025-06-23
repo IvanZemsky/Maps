@@ -7,6 +7,7 @@ import "works-ui/styles.css"
 import "leaflet/dist/leaflet.css"
 import "./styles/fonts.css"
 import "./styles/theme.css"
+import "@/features/map/ui/styles.css"
 import { createPinia } from "pinia"
 
 const app = createApp(App)

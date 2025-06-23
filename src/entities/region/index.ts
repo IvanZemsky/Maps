@@ -3,7 +3,7 @@ export type {
    RegionKeyPolygon,
    RegionKey,
    RegionKeyMarker,
-   MarkerType,
+   MARKER_TYPES,
 } from "./model/types"
 export {
    regionSchema,

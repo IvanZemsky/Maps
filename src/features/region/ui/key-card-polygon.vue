@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { RegionKeyPolygon } from "@/entities/region"
-import { useRegionStore } from "../model/store"
+import { useRegionStore } from "../model/stores/store"
 import { CloseOutlined } from "@vicons/antd"
 import { ref, type Ref } from "vue"
 
@@ -15,11 +15,11 @@ const { keyId, polygon, number } = defineProps<{
 const polygonRef = ref(polygon.value)
 
 function handleRemovePolygon() {
-   regionStore.removePolygon(polygon.value.id)
+   regionStore.keys.removePolygon(polygon.value.id)
 }
 
 function handleDraw() {
-   regionStore.startDrawing(keyId, polygon.value.id)
+   regionStore.keys.startDrawing(keyId, polygon.value.id)
 }
 </script>
 
@@ -27,13 +27,13 @@ function handleDraw() {
    <ui-spacing
       :class="[
          'polygon-card',
-         { active: regionStore.drawingPolygon?.id === polygon.value.id },
+         { active: regionStore.keys.drawingPolygon?.id === polygon.value.id },
       ]"
       align="center"
       gap="sm"
    >
       <ui-button
-         :disabled="regionStore.drawingPolygon?.id === polygon.value.id"
+         :disabled="regionStore.keys.drawingPolygon?.id === polygon.value.id"
          @click="handleDraw"
          class="key-draw-control-btn"
          size="sm"

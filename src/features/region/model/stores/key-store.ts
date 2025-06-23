@@ -9,9 +9,8 @@ import type { LeafletMouseEvent } from "leaflet"
 import { defineStore } from "pinia"
 import { ref, type Ref } from "vue"
 
-export function createKeyDrawingStore(region: Ref<Region>) {
-   return defineStore("keyDrawing", () => {
-      const isDrawing = ref(false)
+export function createKeyStore(region: Ref<Region>) {
+   return defineStore("key", () => {
       const drawingPolygon = ref<RegionKeyPolygon | null>(null)
       const drawingKey = ref<RegionKey>(region.value.keys[0])
 
@@ -48,19 +47,19 @@ export function createKeyDrawingStore(region: Ref<Region>) {
 
       function startDrawing(keyId: number, polygonId: number) {
          drawingKey.value = findKeyById(keyId)
-         const polygon = findPolygonByDrawingId(polygonId)
+         const polygon = findKeyPolygonById(keyId, polygonId)
          if (polygon) {
             drawingPolygon.value = polygon
          }
       }
 
-      function setKeyName(keyId: number, name: string) {
-         const key = findKeyById(keyId)
-         key.name = name
-      }
-
       function stopDrawing() {
          drawingPolygon.value = null
+      }
+
+      function setNameById(keyId: number, name: string) {
+         const key = findKeyById(keyId)
+         key.name = name
       }
 
       function setColor(id: number, color: string) {
@@ -78,8 +77,8 @@ export function createKeyDrawingStore(region: Ref<Region>) {
          return key
       }
 
-      function createPolygon(id: number) {
-         const key = findKeyById(id)
+      function createPolygon(keyId: number) {
+         const key = findKeyById(keyId)
          key.polygons.push(getDefaultRegionKeyPolygon())
       }
 
@@ -116,28 +115,22 @@ export function createKeyDrawingStore(region: Ref<Region>) {
          return polygon
       }
 
-      function findPolygonByDrawingId(id: number) {
-         return drawingKey.value.polygons.find((polygon) => polygon.id === id)
-      }
-
       return {
-         isDrawing,
          drawingPolygon,
          drawingKey,
          handleDraw,
-         createKey,
+         create: createKey,
+         remove: removeKey,
+         createPolygon,
+         removePolygon,
          setPolygonWeight,
          startDrawing,
          stopDrawing,
-         setKeyName,
+         setNameById,
          setColor,
          setDrawingKey,
-         createPolygon,
-         removePolygon,
-         removeKey,
-         findKeyById,
-         findKeyPolygonById,
-         findPolygonByDrawingId,
+         findById: findKeyById,
+         findPolygon: findKeyPolygonById,
       }
    })
 }

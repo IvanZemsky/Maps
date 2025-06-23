@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { useRegionStore, NewRegionControls } from "@/features/region"
+import {
+   useRegionStore,
+   RegionControls,
+   LeftPanel,
+   useLeftPanelStore,
+} from "@/features/region"
 import {
    MapMain,
    MapControls,
@@ -10,12 +15,14 @@ import {
 import { computed, onMounted, provide, ref } from "vue"
 import type { PointTuple } from "leaflet"
 import { DEFAULT_MAP_CENTER } from "@/entities/region"
+import { RegionKeys, RegionNotes } from "@/features/region"
 
 const regionStore = useRegionStore()
+const leftPanelStore = useLeftPanelStore()
 
 const region = computed(() => regionStore.region)
-const isDrawing = computed(() => regionStore.drawingPolygon !== null)
-
+const isDrawing = computed(() => regionStore.keys.drawingPolygon !== null)
+const openedLeftPanelType = computed(() => leftPanelStore.opened)
 const mapCenter = ref<PointTuple>()
 
 provide("mapCenter", mapCenter)
@@ -28,14 +35,19 @@ onMounted(() => {
 <template>
    <map-main
       :class="{ 'cursor-pointer': isDrawing }"
-      @click="regionStore.handleDraw"
+      @click="regionStore.keys.handleDraw"
       v-model:region="region"
    >
-      <NewRegionControls />
+      <RegionControls />
+      
+      <LeftPanel v-if="openedLeftPanelType">
+         <RegionKeys />
+         <RegionNotes />
+      </LeftPanel>
 
       <MapControls />
-      <MapPolylines :drawing-polygon-id="regionStore.drawingPolygon?.id" />
-      <MapPolygons :drawing-polygon-id="regionStore.drawingPolygon?.id" />
+      <MapPolylines :drawing-polygon-id="regionStore.keys.drawingPolygon?.id" />
+      <MapPolygons :drawing-polygon-id="regionStore.keys.drawingPolygon?.id" />
       <MapMarkers />
    </map-main>
 </template>

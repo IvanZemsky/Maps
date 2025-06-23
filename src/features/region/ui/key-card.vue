@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { computed, ref } from "vue"
-import { useRegionStore } from "../model/store"
+import { useRegionStore } from "../model/stores/store"
 import KeyCardPolygon from "./key-card-polygon.vue"
 
 const { id } = defineProps<{ id: number; number: number }>()
 
 const regionStore = useRegionStore()
 
-const key = computed(() => regionStore.findKeyById(id))
+const key = computed(() => regionStore.keys.findById(id))
 
 function handleRemoveKey() {
-   regionStore.removeKey(key.value.id)
+   regionStore.keys.remove(key.value.id)
 }
 
 function handleCreatePolygon() {
-   regionStore.createPolygon(id)
+   regionStore.keys.createPolygon(id)
 }
 </script>
 
