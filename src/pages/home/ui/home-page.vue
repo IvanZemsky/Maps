@@ -2,7 +2,7 @@
 import {
    useRegionStore,
    RegionControls,
-   LeftPanel,
+   RightPanel,
    useLeftPanelStore,
 } from "@/features/region"
 import {
@@ -25,6 +25,14 @@ const isDrawing = computed(() => regionStore.keys.drawingPolygon !== null)
 const openedLeftPanelType = computed(() => leftPanelStore.opened)
 const mapCenter = ref<PointTuple>()
 
+// организовать
+document.addEventListener("keydown", (event) => {
+   if (event.ctrlKey && event.key === "z") {
+      console.log("ctrlz")
+      regionStore.keys.removeLastPolygonCoords()
+   }
+})
+
 onMounted(() => {
    mapCenter.value = (regionStore.region.center as PointTuple) || DEFAULT_MAP_CENTER
 })
@@ -33,15 +41,15 @@ onMounted(() => {
 <template>
    <map-main
       :class="{ 'cursor-pointer': isDrawing }"
-      @click="regionStore.keys.handleDraw"
+      @click="regionStore.handleMapClick"
       v-model:region="region"
    >
       <RegionControls />
 
-      <LeftPanel v-if="openedLeftPanelType">
+      <RightPanel v-if="openedLeftPanelType">
          <RegionKeys />
          <RegionNotes />
-      </LeftPanel>
+      </RightPanel>
 
       <MapControls />
       <MapPolylines :drawing-polygon-id="regionStore.keys.drawingPolygon?.id" />

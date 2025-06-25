@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from "vue"
-import { useRegionStore } from "../model/stores/store"
+import { useRegionStore } from "../../model/stores/store"
 import KeyCardPolygon from "./key-card-polygon.vue"
+import { MColorInput } from "@/shared/ui";
 
 const { id } = defineProps<{ id: number; number: number }>()
 
@@ -22,7 +23,7 @@ function handleCreatePolygon() {
    <ui-card class="key-card" size="sm">
       <ui-spacing vertical gap="sm" align="stretch">
          <ui-input :placeholder="`Key #${number}`" size="sm" v-model.trim="key.name" />
-         <input class="color-input" type="color" v-model.lazy="key.color" />
+         <MColorInput v-model="key.color" />
 
          <KeyCardPolygon
             v-for="(polygon, index) in key.polygons"
@@ -44,19 +45,5 @@ function handleCreatePolygon() {
 }
 .select-key-btn {
    width: 100%;
-}
-.color-input {
-   cursor: pointer;
-   width: 100%;
-   border: none;
-   outline: none;
-   overflow: hidden;
-   box-shadow: none;
-   padding: 0;
-}
-.color-input::-webkit-color-swatch-wrapper {
-   padding: 0;
-   border: none;
-   outline: none;
 }
 </style>

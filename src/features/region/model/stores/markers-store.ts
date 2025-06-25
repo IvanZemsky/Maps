@@ -1,4 +1,10 @@
-import { getDefaltMarker, type Region, type RegionKeyMarker } from "@/entities/region"
+import {
+   getDefaltMarker,
+   MARKER_ICONS,
+   type Region,
+   type RegionKeyMarker,
+} from "@/entities/region"
+import type { LeafletMouseEvent } from "leaflet"
 
 import { defineStore } from "pinia"
 import { ref, type Ref } from "vue"
@@ -6,9 +12,25 @@ import { ref, type Ref } from "vue"
 export function createMarkersStore(region: Ref<Region>) {
    return defineStore("markers", () => {
       const selectedMarker = ref<RegionKeyMarker | null>(null)
+      const isPlacing = ref(false)
 
       function addMarker() {
          region.value.markers.push(getDefaltMarker())
+      }
+
+      function handlePlaceSelectedMarker(event: LeafletMouseEvent) {
+         if (selectedMarker.value) {
+            selectedMarker.value.latlngs = [event.latlng.lat, event.latlng.lng]
+            isPlacing.value = false
+         }
+      }
+
+      function startPlacing() {
+         isPlacing.value = true
+      }
+
+      function setIconToSelected(icon: keyof typeof MARKER_ICONS) {
+         selectedMarker.value!.type = icon
       }
 
       function selectMarker(markerId: number) {
@@ -41,9 +63,13 @@ export function createMarkersStore(region: Ref<Region>) {
 
       return {
          selected: selectedMarker,
+         isPlacing,
+         startPlacing,
          add: addMarker,
+         handlePlaceSelectedMarker,
          remove: removeMarker,
          sortAllByDatetime: sortMarkersByDatetime,
+         setIconToSelected: setIconToSelected,
          select: selectMarker,
          setDesc: setDescToSelected,
          findById: findMarkerById,

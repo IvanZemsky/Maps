@@ -1,30 +1,16 @@
 <script setup lang="ts">
-import { computed, watch, ref } from 'vue';
-import { useModalStore } from "../model";
+import { useAttrs } from "vue"
 
-const props = defineProps<{
-  id: string;
-}>();
+const open = defineModel<boolean>({
+   required: true,
+   default: false,
+})
 
-const modalStore = useModalStore();
-
-const isOpen = computed(() => modalStore.openedModal === props.id);
-
-const internalIsOpen = ref(isOpen.value);
-
-watch(isOpen, (newValue) => {
-    internalIsOpen.value = newValue;
-});
-
-watch(internalIsOpen, (newValue) => {
-  if (!newValue) {
-    modalStore.closeModal();
-  }
-});
+const attrs = useAttrs()
 </script>
 
 <template>
-  <ui-modal v-model="internalIsOpen" teleport="#modal" >
-    <slot />
-  </ui-modal>
+   <ui-modal v-model="open" v-bind="attrs" class="modal" teleport="#modal">
+      <slot />
+   </ui-modal>
 </template>

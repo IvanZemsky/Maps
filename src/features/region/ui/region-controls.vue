@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia"
 import { useRegionStore } from "../model/stores/store"
-import KeyCard from "./key-card.vue"
 import { type Ref } from "vue"
 import type { PointTuple } from "leaflet"
 import { useInject } from "@/shared/lib"
 import { ScrollBlock } from "@/shared/ui"
+import KeyCard from "./region-panel/key-card.vue"
 
 const currentCenter = useInject<Ref<PointTuple>>("currentCenter")
 

@@ -8,6 +8,7 @@ const latLngTupleSchema = z.union([
 export const MARKER_TYPES = {
    battle: "battle",
    none: "none",
+   alert: "alert",
 } as const
 
 export const regionKeyMarkerSchema = z.object({

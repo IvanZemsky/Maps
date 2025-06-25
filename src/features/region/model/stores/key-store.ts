@@ -82,6 +82,12 @@ export function createKeyStore(region: Ref<Region>) {
          key.polygons.push(getDefaultRegionKeyPolygon())
       }
 
+      function removeLastPolygonCoords() {
+         if (drawingPolygon.value) {
+            drawingPolygon.value.latlngs = [...drawingPolygon.value.latlngs.slice(0, -1)]
+         }
+      }
+
       function removePolygon(id: number) {
          region.value.keys = region.value.keys.map((key) => ({
             ...key,
@@ -129,6 +135,7 @@ export function createKeyStore(region: Ref<Region>) {
          setNameById,
          setColor,
          setDrawingKey,
+         removeLastPolygonCoords,
          findById: findKeyById,
          findPolygon: findKeyPolygonById,
       }

@@ -48,7 +48,7 @@ export function getDefaltMarker() {
       latlngs: null,
       type: "none" as keyof typeof MARKER_TYPES,
       datetime: "",
-      color: "grey",
+      color: "#e7e7e7",
       description: "",
    }
 }
@@ -97,6 +97,6 @@ function markerHTML({
                 justify-content:center; background-color: ${color};
               "
             >
-              <img src="${MARKER_ICONS[type]}" style="width:${iconSize}px; height:${iconSize}px" />
+              <img src="${MARKER_ICONS[type].icon}" style="width:${iconSize}px; height:${iconSize}px" />
             </div>`
 }
