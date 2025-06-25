@@ -6,10 +6,14 @@ import { formatDate, useInject } from "@/shared/lib"
 import { MColorInput } from "@/shared/ui"
 import MarkerIconSelectModal from "./marker-icon-select-modal.vue"
 import MarkerPreview from "./marker-preview.vue"
+import CloseOutlined from "@vicons/antd/CloseOutlined"
+import { storeToRefs } from "pinia"
 
 const { marker } = defineProps<{ marker: RegionKeyMarker }>()
 
 const regionStore = useRegionStore()
+
+const {selected: selectedMarker} = storeToRefs(regionStore.markers)
 
 const selected = computed(() => regionStore.markers.selected)
 const isSelected = computed(() => regionStore.markers.selected?.id === marker.id)
@@ -25,16 +29,9 @@ function handleOpenModalClick() {
    isOpen.value = true
 }
 
-watch(
-   selected,
-   () => {
-      if (selected.value?.keyId) {
-         selected.value.color = regionStore.keys.findById(selected.value.keyId).color
-      }
-   },
-   { deep: true },
-)
-// в отдельные компоненты
+function handleDeleteClick() {
+   regionStore.markers.remove(marker.id)
+}
 </script>
 
 <template>
@@ -48,28 +45,30 @@ watch(
       <ui-spacing vertical gap="sm" align="stretch">
          <ui-spacing align="center" gap="sm">
             <ui-input
+               size="sm"
                class="datetime-input"
                v-if="isSelected"
                v-model="regionStore.markers.selected!.datetime"
-               type="date"
+               type="datetime-local"
                placeholder="Datetime"
             />
             <p v-else>
                {{ marker.datetime ? formatDate(marker.datetime) : "No datetime" }}
             </p>
-
-            <MColorInput
+            <ui-button
                v-if="isSelected"
-               :disabled="selected!.keyId"
-               class="color-select"
-               v-model="selected!.color"
-            />
+               size="sm"
+               variant="outlined"
+               @click.stop="handleDeleteClick"
+            >
+               <close-outlined />
+            </ui-button>
          </ui-spacing>
          <ui-textarea
             v-if="isSelected"
             class="note-textarea"
             placeholder="Description"
-            v-model="selected!.description"
+            v-model="selectedMarker!.description"
          />
          <p v-else class="note-text">{{ marker.description || "No description" }}</p>
 
@@ -80,6 +79,12 @@ watch(
             <MarkerPreview
                :color="selected!.color"
                :icon="MARKER_ICONS[selected!.type].icon"
+            />
+            <MColorInput
+               v-if="isSelected"
+               :disabled="selected!.keyId"
+               class="color-select"
+               v-model="selected!.color"
             />
          </ui-spacing>
 
@@ -106,7 +111,7 @@ watch(
                v-for="regionKey in region.keys"
                :key="regionKey.id"
                :value="regionKey.id"
-               :label="regionKey.name"
+               :label="(regionKey.name || 'Nameless')"
             />
             <ui-select-option :value="null" label="No key" />
          </ui-select>
@@ -119,10 +124,17 @@ div.card.selected {
    border-color: var(--primary-main);
 }
 
+:deep(.ui-input).datetime-input input {
+   width: 100%;
+   min-width: 0;
+   flex-shrink: 1;
+}
+
 .color-select {
    width: 40px;
    height: 40px;
    border-radius: 50%;
+   flex-shrink: 0;
 }
 
 button.ui-button.place-btn:disabled {

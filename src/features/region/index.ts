@@ -7,10 +7,18 @@ import RegionNotes from "./ui/right-panel/region-notes.vue"
 import LoadRegionFromFileBtn from "./ui/load-region-from-file-btn.vue"
 
 export { useRegionStore } from "./model/stores/store"
-export { useLeftPanelStore } from "./model/stores/left-panel-store"
+export { useRightPanelStore } from "./model/stores/right-panel-store"
 
-export type { LeftPanelType } from "./model/stores/left-panel-store"
+export type { rightPanelType } from "./model/stores/right-panel-store"
 
 export { defaultRegionTemplates } from "./model/const"
 
-export { RegionControls, RightPanel, KeyCard, RegionKeys, RegionNotes, SelectTemplateBtn, LoadRegionFromFileBtn }
+export {
+   RegionControls,
+   RightPanel,
+   KeyCard,
+   RegionKeys,
+   RegionNotes,
+   SelectTemplateBtn,
+   LoadRegionFromFileBtn,
+}

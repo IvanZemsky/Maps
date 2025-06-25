@@ -44,7 +44,7 @@ function selectIcon(icon: keyof typeof MARKER_ICONS) {
    padding: 0 25px;
 }
 :global(.ui-modal > div) {
-   max-width: 1000px;
+   max-width: 700px;
    width: 100%;
 }
 .marker-icon-btn {

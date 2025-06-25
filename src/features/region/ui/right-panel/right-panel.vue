@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { useLeftPanelStore } from "../../model/stores/left-panel-store"
+import { useRightPanelStore } from "../../model/stores/right-panel-store"
 import { ScrollBlock } from "@/shared/ui"
 
-const leftPanelStore = useLeftPanelStore()
+const rightPanelStore = useRightPanelStore()
 </script>
 
 <template>
    <ScrollBlock position="right" class="content">
-      <ui-button size="sm" variant="outlined" @click="leftPanelStore.close">
+      <ui-button size="sm" variant="outlined" @click="rightPanelStore.close">
          Close
       </ui-button>
 
       <slot />
-
    </ScrollBlock>
 </template>
 

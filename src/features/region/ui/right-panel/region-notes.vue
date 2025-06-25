@@ -2,19 +2,18 @@
 import { storeToRefs } from "pinia"
 import { useRegionStore } from "../../model/stores/store"
 import {
-   useLeftPanelStore,
-   type LeftPanelType,
-} from "../../model/stores/left-panel-store"
+   useRightPanelStore,
+   type rightPanelType,
+} from "../../model/stores/right-panel-store"
 import RegionMarker from "./region-marker.vue"
 
-const type: LeftPanelType = "notes"
+const type: rightPanelType = "notes"
 
 const regionStore = useRegionStore()
 
-const leftPanelStore = useLeftPanelStore()
+const rightPanelStore = useRightPanelStore()
 
 const { region } = storeToRefs(regionStore)
-
 </script>
 
 <template>
@@ -24,7 +23,7 @@ const { region } = storeToRefs(regionStore)
       vertical
       fill
       gap="sm"
-      v-if="leftPanelStore.isOpened(type)"
+      v-if="rightPanelStore.isOpened(type)"
    >
       <ui-button size="sm" @click="regionStore.markers.add">Add note</ui-button>
 

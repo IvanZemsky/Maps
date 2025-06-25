@@ -13,7 +13,7 @@ const region = useInject<Ref<Region>>("region")
          v-if="marker.latlngs"
          :id="marker.id"
          :lat-lng="marker.latlngs"
-         :icon="getMarkerIcon({ type: marker.type, color: marker.color }) as any"
+         :icon="(getMarkerIcon({ type: marker.type, color: marker.color }) as any)"
       />
    </div>
 </template>

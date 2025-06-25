@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { RegionKeyPolygon } from "@/entities/region"
-import { CloseOutlined } from "@vicons/antd"
+import CloseOutlined from "@vicons/antd/CloseOutlined"
 import { ref, type Ref } from "vue"
 import { useRegionStore } from "../../model/stores/store";
 

@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import {
-   useLeftPanelStore,
-   type LeftPanelType,
-} from "../../model/stores/left-panel-store"
+   useRightPanelStore,
+   type rightPanelType,
+} from "../../model/stores/right-panel-store"
 import { storeToRefs } from "pinia"
 import { useRegionStore } from "../../model/stores/store"
 
-const type: LeftPanelType = "keys"
+const type: rightPanelType = "keys"
 
 const regionStore = useRegionStore()
-const leftPanelStore = useLeftPanelStore()
+const rightPanelStore = useRightPanelStore()
 
 const { region } = storeToRefs(regionStore)
 </script>
 
 <template>
-   <div v-if="leftPanelStore.isOpened(type)">
+   <div v-if="rightPanelStore.isOpened(type)">
       <p>keys</p>
    </div>
 </template>

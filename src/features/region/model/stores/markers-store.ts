@@ -7,12 +7,25 @@ import {
 import type { LeafletMouseEvent } from "leaflet"
 
 import { defineStore } from "pinia"
-import { ref, type Ref } from "vue"
+import { ref, watch, type Ref } from "vue"
 
 export function createMarkersStore(region: Ref<Region>) {
    return defineStore("markers", () => {
       const selectedMarker = ref<RegionKeyMarker | null>(null)
       const isPlacing = ref(false)
+
+      watch(selectedMarker, updateSelectedMarkerColor, { deep: true })
+
+      function updateSelectedMarkerColor() {
+         if (selectedMarker.value) {
+            const key = region.value.keys.find(
+               (key) => key.id === selectedMarker.value!.keyId,
+            )
+            if (key) {
+               selectedMarker.value.color = key.color
+            }
+         }
+      }
 
       function addMarker() {
          region.value.markers.push(getDefaltMarker())
@@ -44,13 +57,21 @@ export function createMarkersStore(region: Ref<Region>) {
       }
 
       function removeMarker(markerId: number) {
-         region.value.markers.filter((marker) => marker.id !== markerId)
+         region.value.markers = region.value.markers.filter(
+            (marker) => marker.id !== markerId,
+         )
+         selectedMarker.value = null
+         isPlacing.value = false
       }
 
       function sortMarkersByDatetime(markers: RegionKeyMarker[]) {
-         return markers.sort(
+         return [...markers].sort(
             (a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime(),
          )
+      }
+
+      function getMarkersByKeyId(keyId: number) {
+         return region.value.markers.filter((marker) => marker.keyId === keyId)
       }
 
       function findMarkerById(markerId: number) {
@@ -73,6 +94,7 @@ export function createMarkersStore(region: Ref<Region>) {
          select: selectMarker,
          setDesc: setDescToSelected,
          findById: findMarkerById,
+         getByKeyId: getMarkersByKeyId,
       }
    })
 }

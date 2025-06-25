@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { useLeftPanelStore } from "@/features/region"
-import type { LeftPanelType } from "@/features/region"
+import { useRightPanelStore } from "@/features/region"
+import type { rightPanelType } from "@/features/region"
 
-const leftPanelStore = useLeftPanelStore()
+const rightPanelStore = useRightPanelStore()
 
-defineProps<{ type: LeftPanelType }>()
+defineProps<{ type: rightPanelType }>()
 </script>
 
 <template>
    <ui-button
-      :class="['tab-btn', { active: leftPanelStore.opened === type }]"
-      @click="() => leftPanelStore.open(type)"
+      :class="['tab-btn', { active: rightPanelStore.opened === type }]"
+      @click="() => rightPanelStore.open(type)"
       variant="ghost"
    >
       <slot />
@@ -25,7 +25,7 @@ button:has(svg:only-child).size-md svg {
    width: 1.2rem;
    height: 1.2rem;
 }
-button:has(svg:only-child).size-md.active{
-  border-color: var(--primary-main);
+button:has(svg:only-child).size-md.active {
+   border-color: var(--primary-main);
 }
 </style>

@@ -2,7 +2,7 @@
 import { computed, ref } from "vue"
 import { useRegionStore } from "../../model/stores/store"
 import KeyCardPolygon from "./key-card-polygon.vue"
-import { MColorInput } from "@/shared/ui";
+import { MColorInput } from "@/shared/ui"
 
 const { id } = defineProps<{ id: number; number: number }>()
 
@@ -17,13 +17,20 @@ function handleRemoveKey() {
 function handleCreatePolygon() {
    regionStore.keys.createPolygon(id)
 }
+
+function onColorInput(event: InputEvent) {
+  console.log("color on")
+   const color = (event.target as HTMLInputElement).value
+   const markers = regionStore.markers.getByKeyId(key.value.id)
+   markers.forEach((marker) => (marker.color = color))
+}
 </script>
 
 <template>
    <ui-card class="key-card" size="sm">
       <ui-spacing vertical gap="sm" align="stretch">
          <ui-input :placeholder="`Key #${number}`" size="sm" v-model.trim="key.name" />
-         <MColorInput v-model="key.color" />
+         <MColorInput v-model="key.color" @change="onColorInput" />
 
          <KeyCardPolygon
             v-for="(polygon, index) in key.polygons"

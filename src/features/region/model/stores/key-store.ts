@@ -18,10 +18,7 @@ export function createKeyStore(region: Ref<Region>) {
          if (drawingPolygon.value) {
             let latlngs = drawingPolygon.value.latlngs
 
-            latlngs = [
-               ...latlngs,
-               [event.latlng.lat, event.latlng.lng] as [number, number],
-            ]
+            latlngs = [...latlngs, [event.latlng.lat, event.latlng.lng]]
             drawingPolygon.value.latlngs = latlngs
          }
       }
@@ -62,15 +59,6 @@ export function createKeyStore(region: Ref<Region>) {
          key.name = name
       }
 
-      function setColor(id: number, color: string) {
-         region.value.keys = region.value.keys.map((key) => {
-            if (key.id === id) {
-               return { ...key, color }
-            }
-            return key
-         })
-      }
-
       function setDrawingKey(polygonId: number): RegionKey | undefined {
          const key = findKeyById(polygonId)
          drawingKey.value = key
@@ -93,11 +81,15 @@ export function createKeyStore(region: Ref<Region>) {
             ...key,
             polygons: key.polygons.filter((polygon) => polygon.id !== id),
          }))
+
          stopDrawing()
       }
 
       function removeKey(id: number) {
          region.value.keys = region.value.keys.filter((key) => key.id !== id)
+         region.value.markers = region.value.markers.filter(
+            (marker) => marker.keyId !== id,
+         )
          stopDrawing()
       }
 
@@ -110,14 +102,13 @@ export function createKeyStore(region: Ref<Region>) {
       }
 
       function findKeyPolygonById(keyId: number, polygonId: number) {
-         const key = region.value.keys.find((key) => key.id === keyId)
-         if (!key) {
-            throw new Error("Key not found")
-         }
+         const key = findKeyById(keyId)
+
          const polygon = key.polygons.find((polygon) => polygon.id === polygonId)
          if (!polygon) {
             throw new Error("Polygon not found")
          }
+
          return polygon
       }
 
@@ -133,7 +124,6 @@ export function createKeyStore(region: Ref<Region>) {
          startDrawing,
          stopDrawing,
          setNameById,
-         setColor,
          setDrawingKey,
          removeLastPolygonCoords,
          findById: findKeyById,

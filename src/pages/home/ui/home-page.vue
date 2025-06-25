@@ -3,7 +3,7 @@ import {
    useRegionStore,
    RegionControls,
    RightPanel,
-   useLeftPanelStore,
+   useRightPanelStore,
 } from "@/features/region"
 import {
    MapMain,
@@ -18,11 +18,11 @@ import { DEFAULT_MAP_CENTER } from "@/entities/region"
 import { RegionKeys, RegionNotes } from "@/features/region"
 
 const regionStore = useRegionStore()
-const leftPanelStore = useLeftPanelStore()
+const rightPanelStore = useRightPanelStore()
 
 const region = computed(() => regionStore.region)
 const isDrawing = computed(() => regionStore.keys.drawingPolygon !== null)
-const openedLeftPanelType = computed(() => leftPanelStore.opened)
+const openedrightPanelType = computed(() => rightPanelStore.opened)
 const mapCenter = ref<PointTuple>()
 
 // организовать
@@ -46,7 +46,7 @@ onMounted(() => {
    >
       <RegionControls />
 
-      <RightPanel v-if="openedLeftPanelType">
+      <RightPanel v-if="openedrightPanelType">
          <RegionKeys />
          <RegionNotes />
       </RightPanel>
