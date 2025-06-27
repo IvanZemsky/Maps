@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { defaultRegionTemplates } from "../model/const"
+import { useLoadTemplate } from "../hooks/use-load-template"
 
 const selectedTemplate = ref()
+
+const {isError, handleSelect} = useLoadTemplate()
 </script>
 
 <template>
    <ui-select
-      class="preview-select"
+      :class="['preview-select', {'selected': selectedTemplate}]"
       size="sm"
       v-model="selectedTemplate"
       placeholder="Templates"
@@ -17,13 +20,21 @@ const selectedTemplate = ref()
          :key="template.id"
          :value="template.value"
          :label="template.label"
+         @click="handleSelect(template.value)"
       />
    </ui-select>
+
+   <ui-toast v-model="isError" :timeout="3000">
+      Error occured while loading template
+   </ui-toast>
 </template>
 
 <style scoped>
 .preview-select {
    width: 120px;
+}
+.selected :deep(button.ui-select__button) {
+  border: 1px solid var(--primary-main);
 }
 .preview-select :deep(.ui-select__options) {
    top: calc(100% + 12px);

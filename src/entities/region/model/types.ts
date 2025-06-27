@@ -16,7 +16,7 @@ export const regionKeyMarkerSchema = z.object({
    keyId: z.number().nullable(),
    latlngs: latLngTupleSchema.nullable(),
    type: z.enum(Object.values(MARKER_TYPES)),
-   datetime: z.iso.datetime(),
+   datetime: z.iso.datetime({local: true}),
    color: z.string(),
    description: z.string(),
 })

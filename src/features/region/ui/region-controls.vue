@@ -31,26 +31,19 @@ function setMapCenter() {
          Save region
       </ui-button>
 
+      <ui-button @click="setMapCenter" size="sm" variant="outlined">
+         Set map center
+      </ui-button>
+
       <ui-button
-         @click="setMapCenter"
+         :disabled="!regionStore.keys.drawingPolygon"
+         @click="regionStore.keys.stopDrawing"
          class="key-draw-control-btn"
          size="sm"
          variant="outlined"
       >
-         Set map center
+         Stop drawing
       </ui-button>
-
-      <div class="draw-btn-wrap">
-         <ui-button
-            :disabled="!regionStore.keys.drawingPolygon"
-            @click="regionStore.keys.stopDrawing"
-            class="key-draw-control-btn"
-            size="sm"
-            variant="outlined"
-         >
-            Stop drawing
-         </ui-button>
-      </div>
 
       <key-card
          v-for="(key, index) in regionStore.region.keys"
@@ -64,7 +57,10 @@ function setMapCenter() {
 </template>
 
 <style scoped>
-.draw-btn-wrap button {
-   width: 100%;
+.key-draw-control-btn {
+   position: sticky;
+   top: 0;
+   left: 0;
+   z-index: 600;
 }
 </style>

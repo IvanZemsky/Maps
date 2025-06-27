@@ -5,6 +5,10 @@ import { type Ref } from "vue"
 import { useInject } from "@/shared/lib"
 
 const region = useInject<Ref<Region>>("region")
+
+defineProps<{ focusedMarkerId: number | null }>()
+
+defineEmits<{ (e: "focus", id: number): void }>()
 </script>
 
 <template>
@@ -13,7 +17,14 @@ const region = useInject<Ref<Region>>("region")
          v-if="marker.latlngs"
          :id="marker.id"
          :lat-lng="marker.latlngs"
-         :icon="(getMarkerIcon({ type: marker.type, color: marker.color }) as any)"
+         @click="$emit('focus', marker.id)"
+         :icon="
+            getMarkerIcon({
+               type: marker.type,
+               color: marker.color,
+               focused: marker.id === focusedMarkerId,
+            }) as any
+         "
       />
    </div>
 </template>

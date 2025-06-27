@@ -2,19 +2,19 @@ import App from "./app.vue"
 import router from "./router/router"
 
 import { createApp } from "vue"
-import WorksUi from "works-ui"
 import "works-ui/styles.css"
 import "leaflet/dist/leaflet.css"
 import "./styles/fonts.css"
 import "./styles/theme.css"
 import "@/features/map/ui/styles.css"
 import { createPinia } from "pinia"
+import { registerUI } from "./lib/register-ui"
 
 const app = createApp(App)
 const pinia = createPinia()
 
 app.use(pinia)
 app.use(router)
-app.use(WorksUi)
+registerUI(app)
 
 app.mount("#app")

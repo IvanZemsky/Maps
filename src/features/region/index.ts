@@ -1,9 +1,9 @@
 import RegionControls from "./ui/region-controls.vue"
-import RightPanel from "./ui/right-panel/right-panel.vue"
+import InfoPanel from "./ui/info-panel/info-panel.vue"
 import KeyCard from "./ui/region-panel/key-card.vue"
-import RegionKeys from "./ui/right-panel/region-keys.vue"
+import RegionKeys from "./ui/info-panel/region-keys.vue"
 import SelectTemplateBtn from "./ui/select-template-btn.vue"
-import RegionNotes from "./ui/right-panel/region-notes.vue"
+import RegionNotes from "./ui/info-panel/region-notes.vue"
 import LoadRegionFromFileBtn from "./ui/load-region-from-file-btn.vue"
 
 export { useRegionStore } from "./model/stores/store"
@@ -15,7 +15,7 @@ export { defaultRegionTemplates } from "./model/const"
 
 export {
    RegionControls,
-   RightPanel,
+   InfoPanel,
    KeyCard,
    RegionKeys,
    RegionNotes,

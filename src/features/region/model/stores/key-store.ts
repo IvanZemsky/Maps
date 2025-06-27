@@ -5,6 +5,7 @@ import {
    type RegionKey,
    type RegionKeyPolygon,
 } from "@/entities/region"
+import { filterById, findById } from "@/shared/lib"
 import type { LeafletMouseEvent } from "leaflet"
 import { defineStore } from "pinia"
 import { ref, type Ref } from "vue"
@@ -79,14 +80,14 @@ export function createKeyStore(region: Ref<Region>) {
       function removePolygon(id: number) {
          region.value.keys = region.value.keys.map((key) => ({
             ...key,
-            polygons: key.polygons.filter((polygon) => polygon.id !== id),
+            polygons: filterById(key.polygons, id),
          }))
 
          stopDrawing()
       }
 
       function removeKey(id: number) {
-         region.value.keys = region.value.keys.filter((key) => key.id !== id)
+         region.value.keys = filterById(region.value.keys, id)
          region.value.markers = region.value.markers.filter(
             (marker) => marker.keyId !== id,
          )
@@ -94,7 +95,7 @@ export function createKeyStore(region: Ref<Region>) {
       }
 
       function findKeyById(id: number) {
-         const key = region.value.keys.find((key) => key.id === id)
+         const key = findById(region.value.keys, id)
          if (!key) {
             throw new Error("Key not found")
          }
@@ -104,7 +105,7 @@ export function createKeyStore(region: Ref<Region>) {
       function findKeyPolygonById(keyId: number, polygonId: number) {
          const key = findKeyById(keyId)
 
-         const polygon = key.polygons.find((polygon) => polygon.id === polygonId)
+         const polygon = findById(key.polygons, polygonId)
          if (!polygon) {
             throw new Error("Polygon not found")
          }

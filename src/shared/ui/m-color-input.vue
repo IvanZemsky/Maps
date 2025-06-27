@@ -8,6 +8,9 @@ const model = defineModel<string>()
 
 <style scoped>
 .color-input {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
    cursor: pointer;
    width: 100%;
    border: none;
@@ -15,12 +18,17 @@ const model = defineModel<string>()
    overflow: hidden;
    box-shadow: none;
    padding: 0;
-   border: 1px solid black;
+   border: 1px solid var(--neutral-main) ;
 }
 .color-input::-webkit-color-swatch-wrapper {
    padding: 0;
    border: none;
    outline: none;
    box-shadow: none;
+}
+
+.color-input::-webkit-color-swatch{
+  border: 0;
+  border-radius: 0;
 }
 </style>

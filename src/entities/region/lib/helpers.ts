@@ -56,6 +56,7 @@ export function getDefaltMarker() {
 type GetMarkerOptions = {
    type: keyof typeof MARKER_TYPES
    color: string
+   focused: boolean
    markerSize?: number
    iconMarkerDifference?: number
 }
@@ -63,6 +64,7 @@ type GetMarkerOptions = {
 export function getMarkerIcon({
    type,
    color,
+   focused,
    markerSize = MARKER_SIZE,
    iconMarkerDifference = MARKER_ICON_DIFFERENCE,
 }: GetMarkerOptions) {
@@ -70,7 +72,7 @@ export function getMarkerIcon({
    const iconSize = markerSize - iconMarkerDifference
 
    return L.divIcon({
-      html: markerHTML({ type, color, markerSize, iconSize }),
+      html: markerHTML({ type, color, markerSize, iconSize, focused }),
       className: "",
       iconAnchor: [iconAnchorSize, iconAnchorSize],
    })
@@ -81,16 +83,18 @@ type MarkerHTMLOptions = {
    color: string
    markerSize: number
    iconSize: number
+   focused: boolean
 }
 
 function markerHTML({
+   focused,
    type,
    color,
    markerSize = MARKER_SIZE,
    iconSize = MARKER_SIZE - MARKER_ICON_DIFFERENCE,
 }: MarkerHTMLOptions) {
    return `<div
-              class="marker"
+              class="marker ${focused ? "marker-focused" : ""}"
               style="
                 width:${markerSize}px;
                 height:${markerSize}px;

@@ -5,7 +5,7 @@ import {
    useRightPanelStore,
    type rightPanelType,
 } from "../../model/stores/right-panel-store"
-import RegionMarker from "./region-marker.vue"
+import RegionNote from "../region-note/region-note.vue"
 
 const type: rightPanelType = "notes"
 
@@ -28,7 +28,7 @@ const { region } = storeToRefs(regionStore)
       <ui-button size="sm" @click="regionStore.markers.add">Add note</ui-button>
 
       <ui-spacing v-if="region.markers.length" vertical fill align="stretch" gap="sm">
-         <RegionMarker
+         <RegionNote
             v-for="marker in region.markers"
             :key="marker.id"
             :marker="marker"

@@ -4,6 +4,7 @@ import {
    type Region,
    type RegionKeyMarker,
 } from "@/entities/region"
+import { filterById, findById } from "@/shared/lib"
 import type { LeafletMouseEvent } from "leaflet"
 
 import { defineStore } from "pinia"
@@ -12,6 +13,7 @@ import { ref, watch, type Ref } from "vue"
 export function createMarkersStore(region: Ref<Region>) {
    return defineStore("markers", () => {
       const selectedMarker = ref<RegionKeyMarker | null>(null)
+      const focusedMarker = ref<RegionKeyMarker | null>(null)
       const isPlacing = ref(false)
 
       watch(selectedMarker, updateSelectedMarkerColor, { deep: true })
@@ -50,6 +52,10 @@ export function createMarkersStore(region: Ref<Region>) {
          selectedMarker.value = findMarkerById(markerId)
       }
 
+      function focusMarker(markerId: number) {
+         focusedMarker.value = findMarkerById(markerId)
+      }
+
       function setDescToSelected(desc: string) {
          if (selectedMarker.value) {
             selectedMarker.value.description = desc
@@ -57,9 +63,7 @@ export function createMarkersStore(region: Ref<Region>) {
       }
 
       function removeMarker(markerId: number) {
-         region.value.markers = region.value.markers.filter(
-            (marker) => marker.id !== markerId,
-         )
+         region.value.markers = filterById(region.value.markers, markerId)
          selectedMarker.value = null
          isPlacing.value = false
       }
@@ -75,7 +79,7 @@ export function createMarkersStore(region: Ref<Region>) {
       }
 
       function findMarkerById(markerId: number) {
-         const marker = region.value.markers.find((marker) => marker.id === markerId)
+         const marker = findById(region.value.markers, markerId)
          if (!marker) {
             throw new Error("Marker not found")
          }
@@ -84,11 +88,13 @@ export function createMarkersStore(region: Ref<Region>) {
 
       return {
          selected: selectedMarker,
+         focused: focusedMarker,
          isPlacing,
          startPlacing,
          add: addMarker,
          handlePlaceSelectedMarker,
          remove: removeMarker,
+         focus: focusMarker,
          sortAllByDatetime: sortMarkersByDatetime,
          setIconToSelected: setIconToSelected,
          select: selectMarker,
