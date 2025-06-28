@@ -9,6 +9,7 @@ import { createMarkersStore } from "./markers-store"
 
 export const useRegionStore = defineStore("region", () => {
    const region = ref<Region>(getDefaultRegion())
+   const selectedTemplate = ref<string | null>(null)
 
    const keyStore = createKeyStore(region)()
    const { drawingPolygon } = storeToRefs(keyStore)
@@ -30,6 +31,7 @@ export const useRegionStore = defineStore("region", () => {
 
    function reset() {
       region.value = getDefaultRegion()
+      selectedTemplate.value = null
    }
 
    function setName(name: string) {
@@ -42,6 +44,7 @@ export const useRegionStore = defineStore("region", () => {
 
    return {
       region,
+      selectedTemplate,
       setCenter,
       setName,
       reset,

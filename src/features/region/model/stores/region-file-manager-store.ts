@@ -3,10 +3,11 @@ import { ref, type Ref } from "vue"
 import { regionSchema, type Region } from "@/entities/region"
 
 export function createRegionFileManagerStore(region: Ref<Region>) {
-   return defineStore("regions", () => {
+   return defineStore("regionFileManager", () => {
       const errorMessage = ref<string | null>(null)
 
       async function loadRegionFromFile(event: Event) {
+         errorMessage.value = null
          const target = event.target as HTMLInputElement
          const file = target.files?.[0]
 
@@ -14,10 +15,10 @@ export function createRegionFileManagerStore(region: Ref<Region>) {
 
          try {
             const parsedRerion = await parseRegionFile(file)
-
             region.value = parsedRerion
          } catch (error) {
-            console.error("Ошибка загрузки региона:", error)
+            errorMessage.value = `Error while loading file: ${file.name}`
+            console.error("Error while loading region:", error)
          }
       }
 
@@ -58,7 +59,7 @@ export function createRegionFileManagerStore(region: Ref<Region>) {
                      reject(result.error)
                   }
                } catch (error) {
-                  reject(new Error(`Failed to parse JSON: ${error}`))
+                  reject(error)
                }
             }
 

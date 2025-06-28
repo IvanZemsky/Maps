@@ -5,7 +5,6 @@ export const useModalStore = defineStore("modal", () => {
    const openedModal = ref<string | null>(null)
 
    function openModal(modalId: string) {
-      console.log("openModal:", modalId)
       openedModal.value = modalId
    }
 

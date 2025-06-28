@@ -7,7 +7,11 @@ const rightPanelStore = useInfoPanelStore()
 
 <template>
    <ScrollBlock position="right" class="content">
-      <ui-button size="sm" variant="outlined" @click="rightPanelStore.close">
+      <ui-button
+         size="sm"
+         variant="outlined"
+         @click="rightPanelStore.close"
+      >
          Close
       </ui-button>
 

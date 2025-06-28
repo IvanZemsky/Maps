@@ -1,2 +1,3 @@
-
-export const currentMapCenterKey = Symbol();
+export const mapProvideKeys = {
+  currentCenter: Symbol(),
+}

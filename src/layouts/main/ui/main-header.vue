@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useRegionStore } from "@/features/region"
-import { formatDate } from "@/shared/lib"
+import { formatDatetime } from "@/shared/lib"
 import CompassOutlined from "@vicons/antd/CompassOutlined"
 import ProfileOutlined from "@vicons/antd/ProfileOutlined"
 import TabBtn from "./tab-btn.vue"
 import { SelectTemplateBtn, LoadRegionFromFileBtn } from "@/features/region"
 
-const currentDate = formatDate(Date.now())
+const currentDate = formatDatetime(Date.now(), false)
 
 const regionStore = useRegionStore()
 </script>

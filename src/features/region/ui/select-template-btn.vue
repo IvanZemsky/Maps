@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue"
 import { defaultRegionTemplates } from "../model/const"
 import { useLoadTemplate } from "../hooks/use-load-template"
 
-const selectedTemplate = ref()
-
-const {isError, handleSelect} = useLoadTemplate()
+const {selectedTemplate, isError, handleSelect} = useLoadTemplate()
 </script>
 
 <template>

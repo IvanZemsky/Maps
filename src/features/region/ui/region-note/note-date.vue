@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRegionStore } from "../../model/stores/store"
-import { formatDate } from "@/shared/lib"
+import { formatDatetime } from "@/shared/lib"
 import DeleteFilled from "@vicons/antd/DeleteFilled"
 import { useNoteControls } from "../../lib/use-note-controls"
 import { computed } from "vue"
@@ -10,7 +10,7 @@ const { selectedMarker, isSelected, marker } = useNoteControls()
 const regionStore = useRegionStore()
 
 const datetime = computed(() =>
-   marker.datetime ? formatDate(marker.datetime) : "No datetime",
+   marker.datetime ? formatDatetime(marker.datetime) : "No datetime",
 )
 
 function handleDeleteClick() {
@@ -35,9 +35,10 @@ function handleDeleteClick() {
          v-if="isSelected"
          size="sm"
          variant="outlined"
+         color="critical"
          @click.stop="handleDeleteClick"
       >
-         <delete-filled/>
+         <delete-filled />
       </ui-button>
    </ui-spacing>
 </template>

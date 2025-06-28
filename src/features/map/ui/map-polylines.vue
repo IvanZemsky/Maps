@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { regionKey, type Region } from "@/entities/region"
+import { regionProvideKeys, type Region } from "@/entities/region"
 import { useInject } from "@/shared/lib"
 import { LPolyline } from "@vue-leaflet/vue-leaflet"
 import { type Ref } from "vue"
@@ -8,7 +8,7 @@ const props = defineProps<{
    drawingPolygonId?: number
 }>()
 
-const region = useInject<Ref<Region>>(regionKey)
+const region = useInject<Ref<Region>>(regionProvideKeys.region)
 
 function isVisible(polylineId: number) {
    return props.drawingPolygonId === polylineId

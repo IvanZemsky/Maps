@@ -1,1 +1,1 @@
-export { currentMapCenterKey } from "./model/provide-keys";
+export {mapProvideKeys} from "./model/provide-keys"

@@ -6,9 +6,9 @@ import { type PointTuple } from "leaflet"
 import { useDocumentKeydown, useInject } from "@/shared/lib"
 import { ScrollBlock } from "@/shared/ui"
 import KeyCard from "./region-panel/key-card.vue"
-import { currentMapCenterKey } from "@/entities/map"
+import { mapProvideKeys } from "@/entities/map"
 
-const currentCenter = useInject<Ref<PointTuple>>(currentMapCenterKey)
+const currentCenter = useInject<Ref<PointTuple>>(mapProvideKeys.currentCenter)
 
 const regionStore = useRegionStore()
 

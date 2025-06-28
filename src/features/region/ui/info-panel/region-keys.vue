@@ -27,6 +27,7 @@ const { region } = storeToRefs(regionStore)
       gap="sm"
       v-if="rightPanelStore.isOpened(type)"
    >
+      <p>Keys</p>
       <ui-spacing v-if="region.keys.length" vertical fill align="stretch" gap="sm">
          <InfoKeyItem v-for="key in region.keys" :key="key.id" :data="key" />
       </ui-spacing>

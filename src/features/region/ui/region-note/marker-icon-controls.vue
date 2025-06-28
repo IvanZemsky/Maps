@@ -38,7 +38,7 @@ function handleOpenModalClick() {
 .color-select {
    width: 40px;
    height: 40px;
-   border-radius: 50%;
+   border-radius: 0.5rem;
    flex-shrink: 0;
 }
 .open-marker-modal-btn {

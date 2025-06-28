@@ -3,6 +3,7 @@ import { computed, ref } from "vue"
 import { useRegionStore } from "../../model/stores/store"
 import KeyCardPolygon from "./key-card-polygon.vue"
 import { MColorInput } from "@/shared/ui"
+import KeyRemovalModal from "./key-removal-modal.vue"
 
 const { id } = defineProps<{ id: number; number: number }>()
 
@@ -10,18 +11,20 @@ const regionStore = useRegionStore()
 
 const key = computed(() => regionStore.keys.findById(id))
 
-function handleRemoveKey() {
-   regionStore.keys.remove(key.value.id)
-}
-
-function handleCreatePolygon() {
-   regionStore.keys.createPolygon(id)
-}
+const isModalOpen = ref(false)
 
 function onColorInput(event: InputEvent) {
    const color = (event.target as HTMLInputElement).value
    const markers = regionStore.markers.getByKeyId(key.value.id)
    markers.forEach((marker) => (marker.color = color))
+}
+
+function handleModalOpen() {
+   isModalOpen.value = true
+}
+
+function handleModalClose() {
+   isModalOpen.value = false
 }
 </script>
 
@@ -38,10 +41,19 @@ function onColorInput(event: InputEvent) {
             :polygon="ref(polygon)"
             :number="index + 1"
          />
-         <ui-button size="sm" @click="handleCreatePolygon">Add polygon</ui-button>
-         <ui-button size="sm" @click="handleRemoveKey">Remove</ui-button>
+         <ui-button size="sm" @click="regionStore.keys.createPolygon(key.id)">
+            Add polygon
+         </ui-button>
+         <ui-button size="sm" color="critical" @click="handleModalOpen">Remove</ui-button>
       </ui-spacing>
    </ui-card>
+
+   <KeyRemovalModal
+      :id="id"
+      v-model="isModalOpen"
+      @cancel="handleModalClose"
+      @submit="regionStore.keys.remove"
+   />
 </template>
 
 <style scoped>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { LMarker } from "@vue-leaflet/vue-leaflet"
-import { getMarkerIcon, regionKey, type Region } from "@/entities/region"
+import { getMarkerIcon, regionProvideKeys, type Region } from "@/entities/region"
 import { type Ref } from "vue"
 import { useInject } from "@/shared/lib"
 
-const region = useInject<Ref<Region>>(regionKey)
+const region = useInject<Ref<Region>>(regionProvideKeys.region)
 
 defineProps<{ focusedMarkerId: number | null }>()
 

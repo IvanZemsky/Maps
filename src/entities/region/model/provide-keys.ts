@@ -1,2 +1,4 @@
-export const regionKey = Symbol()
-export const noteControlsKey = Symbol()
+export const regionProvideKeys = {
+  region: Symbol(),
+  noteControls: Symbol(),
+}

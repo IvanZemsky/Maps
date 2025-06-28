@@ -19,5 +19,5 @@ export {
    getDefaltMarker,
 } from "./lib/helpers"
 
-export {regionKey, noteControlsKey} from "./model/provide-keys"
+export {regionProvideKeys} from "./model/provide-keys"
 export { MARKER_ICONS, DEFAULT_MAP_CENTER } from "./model/const"

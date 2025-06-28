@@ -4,8 +4,8 @@ import { provide, ref, useTemplateRef, watch } from "vue"
 import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet"
 import { MAP_CONFIG } from "../model/const"
 import type { Region } from "@/entities/region"
-import { DEFAULT_MAP_CENTER, regionKey } from "@/entities/region"
-import { currentMapCenterKey } from "@/entities/map"
+import { DEFAULT_MAP_CENTER, regionProvideKeys } from "@/entities/region"
+import { mapProvideKeys } from "@/entities/map"
 
 const zoom = ref(MAP_CONFIG.zoom)
 
@@ -16,10 +16,10 @@ const emit = defineEmits<{
 }>()
 
 const region = defineModel<Region>("region")
-provide(regionKey, region)
+provide(regionProvideKeys.region, region)
 
 const currentCenter = ref<PointTuple>(DEFAULT_MAP_CENTER)
-provide(currentMapCenterKey, currentCenter)
+provide(mapProvideKeys.currentCenter, currentCenter)
 
 const regionCenter = ref(region.value?.center || DEFAULT_MAP_CENTER)
 
