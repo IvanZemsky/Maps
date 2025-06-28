@@ -29,7 +29,5 @@ const isOpen = defineModel<boolean>({
 </template>
 
 <style scoped>
-div.modal:global(div.ui-modal > div) {
-  width: fit-content;
-}
+
 </style>

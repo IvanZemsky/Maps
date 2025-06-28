@@ -9,6 +9,23 @@ export const MARKER_TYPES = {
    battle: "battle",
    none: "none",
    alert: "alert",
+   captured: "captured",
+   militaryPlane: "militaryPlane",
+   drone: "drone",
+   statement: "statement",
+   supply: "supply",
+   fires: "fires",
+   police: "police",
+   gun: "gun",
+   flood: "flood",
+   arrest: "arrest",
+   earthquake: "earthquake",
+   civilPlane: "civilPlane",
+   computers: "computers",
+   electricity: "electricity",
+   radioactive: "radioactive",
+   explosion: "explosion",
+   stop: "stop",
 } as const
 
 export const regionKeyMarkerSchema = z.object({
@@ -16,7 +33,7 @@ export const regionKeyMarkerSchema = z.object({
    keyId: z.number().nullable(),
    latlngs: latLngTupleSchema.nullable(),
    type: z.enum(Object.values(MARKER_TYPES)),
-   datetime: z.iso.datetime({local: true}),
+   datetime: z.iso.datetime({ local: true }),
    color: z.string(),
    description: z.string(),
 })

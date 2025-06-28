@@ -40,13 +40,6 @@ function selectIcon(icon: keyof typeof MARKER_ICONS) {
 </template>
 
 <style scoped>
-:global(.ui-modal) {
-   padding: 0 25px;
-}
-:global(.ui-modal > div) {
-   max-width: 700px;
-   width: 100%;
-}
 .marker-icon-btn {
    width: 50px;
    height: 50px;
