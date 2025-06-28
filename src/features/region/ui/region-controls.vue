@@ -2,21 +2,31 @@
 import { storeToRefs } from "pinia"
 import { useRegionStore } from "../model/stores/store"
 import { type Ref } from "vue"
-import type { PointTuple } from "leaflet"
-import { useInject } from "@/shared/lib"
+import { type PointTuple } from "leaflet"
+import { useDocumentKeydown, useInject } from "@/shared/lib"
 import { ScrollBlock } from "@/shared/ui"
 import KeyCard from "./region-panel/key-card.vue"
+import { currentMapCenterKey } from "@/entities/map"
 
-const currentCenter = useInject<Ref<PointTuple>>("currentCenter")
+const currentCenter = useInject<Ref<PointTuple>>(currentMapCenterKey)
 
 const regionStore = useRegionStore()
 
 const { region } = storeToRefs(regionStore)
 
 function setMapCenter() {
-   console.log("setMapCenter", currentCenter.value)
    regionStore.setCenter(currentCenter.value)
 }
+
+useDocumentKeydown((event) => {
+   if (event.key === "Escape") {
+      regionStore.keys.stopDrawing()
+   }
+   if (event.ctrlKey && event.key === "z") {
+      event.preventDefault()
+      regionStore.keys.removeLastPolygonCoords()
+   }
+})
 </script>
 
 <template>

@@ -19,7 +19,6 @@ function handleCreatePolygon() {
 }
 
 function onColorInput(event: InputEvent) {
-  console.log("color on")
    const color = (event.target as HTMLInputElement).value
    const markers = regionStore.markers.getByKeyId(key.value.id)
    markers.forEach((marker) => (marker.color = color))

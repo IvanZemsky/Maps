@@ -7,9 +7,10 @@ import RegionNotes from "./ui/info-panel/region-notes.vue"
 import LoadRegionFromFileBtn from "./ui/load-region-from-file-btn.vue"
 
 export { useRegionStore } from "./model/stores/store"
-export { useRightPanelStore } from "./model/stores/right-panel-store"
+export { useInfoPanelStore } from "./model/stores/right-panel-store"
+export { useWatchFocusedMarker } from "./lib/use-watch-focused-markes"
 
-export type { rightPanelType } from "./model/stores/right-panel-store"
+export type { InfoPanelType } from "./model/stores/right-panel-store"
 
 export { defaultRegionTemplates } from "./model/const"
 

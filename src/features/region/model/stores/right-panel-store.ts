@@ -1,12 +1,12 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
 
-export type rightPanelType = "keys" | "notes"
+export type InfoPanelType = "keys" | "notes"
 
-export const useRightPanelStore = defineStore("right-panel", () => {
-   const opened = ref<rightPanelType | null>(null)
+export const useInfoPanelStore = defineStore("info-panel", () => {
+   const opened = ref<InfoPanelType | null>(null)
 
-   function open(type: rightPanelType) {
+   function open(type: InfoPanelType) {
       opened.value = type
    }
 
@@ -14,7 +14,7 @@ export const useRightPanelStore = defineStore("right-panel", () => {
       opened.value = null
    }
 
-   function isOpened(type: rightPanelType) {
+   function isOpened(type: InfoPanelType) {
       return opened.value === type
    }
 

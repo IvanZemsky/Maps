@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Region } from "@/entities/region"
-import { useInject } from "@/shared/lib";
+import { regionKey, type Region } from "@/entities/region"
+import { useInject } from "@/shared/lib"
 import { LPolygon } from "@vue-leaflet/vue-leaflet"
 import { type Ref } from "vue"
 
@@ -8,7 +8,7 @@ const props = defineProps<{
    drawingPolygonId?: number
 }>()
 
-const region = useInject<Ref<Region>>("region")
+const region = useInject<Ref<Region>>(regionKey)
 
 function isVisible(polygonId: number) {
    return props.drawingPolygonId !== polygonId

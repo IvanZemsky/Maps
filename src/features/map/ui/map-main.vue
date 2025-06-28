@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { LeafletMouseEvent, PointTuple } from "leaflet"
+import { type LeafletMouseEvent, type PointTuple } from "leaflet"
 import { provide, ref, useTemplateRef, watch } from "vue"
 import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet"
 import { MAP_CONFIG } from "../model/const"
 import type { Region } from "@/entities/region"
-import { DEFAULT_MAP_CENTER } from "@/entities/region"
+import { DEFAULT_MAP_CENTER, regionKey } from "@/entities/region"
+import { currentMapCenterKey } from "@/entities/map"
 
 const zoom = ref(MAP_CONFIG.zoom)
 
@@ -15,10 +16,10 @@ const emit = defineEmits<{
 }>()
 
 const region = defineModel<Region>("region")
-provide("region", region)
+provide(regionKey, region)
 
 const currentCenter = ref<PointTuple>(DEFAULT_MAP_CENTER)
-provide("currentCenter", currentCenter)
+provide(currentMapCenterKey, currentCenter)
 
 const regionCenter = ref(region.value?.center || DEFAULT_MAP_CENTER)
 

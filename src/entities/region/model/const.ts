@@ -12,6 +12,7 @@ type MarkerIcon = {
   id: number
   icon: string
   type: keyof typeof MARKER_TYPES
+  desc: string
 }
 
 export const MARKER_ICONS: Record<keyof typeof MARKER_TYPES, MarkerIcon> = {
@@ -19,23 +20,18 @@ export const MARKER_ICONS: Record<keyof typeof MARKER_TYPES, MarkerIcon> = {
       id: 1,
       icon: NoneIcon,
       type: "none",
+      desc: "Empty",
    },
    battle: {
       id: 2,
       icon: BattleIcon,
       type: "battle",
+      desc: "Battle, armed man",
    },
    alert: {
       id: 3,
       icon: AlertFilled,
       type: "alert",
+      desc: "Alert, warning",
    },
 }
-
-// export const REGION_TEMPLATES: Record<string, Region> = {
-//   "syria": {
-//     name: "Syria",
-//     keys: [],
-//     polygons: [],
-//   }
-// }

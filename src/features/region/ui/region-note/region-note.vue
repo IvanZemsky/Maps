@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Region, type RegionKeyMarker } from "@/entities/region"
+import { noteControlsKey, regionKey, type Region, type RegionKeyMarker } from "@/entities/region"
 import { useRegionStore } from "../../model/stores/store"
 import { computed, provide, type Ref } from "vue"
 import { storeToRefs } from "pinia"
@@ -8,7 +8,7 @@ import NoteDate from "./note-date.vue"
 import MarkerIconControls from "./marker-icon-controls.vue"
 import NoteDesc from "./note-desc.vue"
 
-const region = useInject<Ref<Region>>("region")
+const region = useInject<Ref<Region>>(regionKey)
 
 const { marker } = defineProps<{ marker: RegionKeyMarker }>()
 
@@ -19,7 +19,7 @@ const { selected: selectedMarker } = storeToRefs(regionStore.markers)
 const isSelected = computed(() => regionStore.markers.selected?.id === marker.id)
 const isFocused = computed(() => regionStore.markers.focused?.id === marker.id)
 
-provide("note-controls", {
+provide(noteControlsKey, {
    marker,
    isSelected,
    selectedMarker,

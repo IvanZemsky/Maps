@@ -1,4 +1,4 @@
-import type { RegionKeyMarker } from "@/entities/region"
+import { noteControlsKey, type RegionKeyMarker } from "@/entities/region"
 import { useInject } from "@/shared/lib"
 import type { ComputedRef } from "vue"
 
@@ -7,5 +7,5 @@ export function useNoteControls() {
       marker: RegionKeyMarker
       selectedMarker: ComputedRef<RegionKeyMarker | null>
       isSelected: ComputedRef<boolean>
-   }>("note-controls")
+   }>(noteControlsKey)
 }

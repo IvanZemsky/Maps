@@ -2,16 +2,16 @@
 import { storeToRefs } from "pinia"
 import { useRegionStore } from "../../model/stores/store"
 import {
-   useRightPanelStore,
-   type rightPanelType,
+   useInfoPanelStore,
+   type InfoPanelType,
 } from "../../model/stores/right-panel-store"
 import RegionNote from "../region-note/region-note.vue"
 
-const type: rightPanelType = "notes"
+const type: InfoPanelType = "notes"
 
 const regionStore = useRegionStore()
 
-const rightPanelStore = useRightPanelStore()
+const rightPanelStore = useInfoPanelStore()
 
 const { region } = storeToRefs(regionStore)
 </script>
@@ -28,11 +28,7 @@ const { region } = storeToRefs(regionStore)
       <ui-button size="sm" @click="regionStore.markers.add">Add note</ui-button>
 
       <ui-spacing v-if="region.markers.length" vertical fill align="stretch" gap="sm">
-         <RegionNote
-            v-for="marker in region.markers"
-            :key="marker.id"
-            :marker="marker"
-         />
+         <RegionNote v-for="marker in region.markers" :key="marker.id" :marker="marker" />
       </ui-spacing>
 
       <p v-else>No notes</p>

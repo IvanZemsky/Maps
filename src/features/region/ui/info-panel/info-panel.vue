@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useRightPanelStore } from "../../model/stores/right-panel-store"
+import { useInfoPanelStore } from "../../model/stores/right-panel-store"
 import { ScrollBlock } from "@/shared/ui"
 
-const rightPanelStore = useRightPanelStore()
+const rightPanelStore = useInfoPanelStore()
 </script>
 
 <template>

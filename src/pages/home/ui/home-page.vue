@@ -3,7 +3,8 @@ import {
    useRegionStore,
    RegionControls,
    InfoPanel,
-   useRightPanelStore,
+   useInfoPanelStore,
+   useWatchFocusedMarker,
 } from "@/features/region"
 import {
    MapMain,
@@ -11,40 +12,29 @@ import {
    MapPolylines,
    MapPolygons,
    MapMarkers,
+   useInitMapCenter,
 } from "@/features/map"
-import { computed, onMounted, ref, watch } from "vue"
+import { computed } from "vue"
 import type { PointTuple } from "leaflet"
-import { DEFAULT_MAP_CENTER } from "@/entities/region"
 import { RegionKeys, RegionNotes } from "@/features/region"
+import { storeToRefs } from "pinia"
 
 const regionStore = useRegionStore()
-const rightPanelStore = useRightPanelStore()
+const rightPanelStore = useInfoPanelStore()
 
 const isDrawing = computed(() => regionStore.keys.drawingPolygon !== null)
-const focusedMarkerId = computed(() => regionStore.markers.focused?.id || null)
-const mapCenter = ref<PointTuple>()
+const focusedMarker = storeToRefs(regionStore.markers).focused
+const focusedMarkerId = useWatchFocusedMarker(focusedMarker)
 
-onMounted(() => {
-   mapCenter.value = (regionStore.region.center as PointTuple) || DEFAULT_MAP_CENTER
-})
-
-// организовать
-document.addEventListener("keydown", (event) => {
-   if (event.ctrlKey && event.key === "z") {
-      regionStore.keys.removeLastPolygonCoords()
-   }
-})
-
-watch(focusedMarkerId, () => {
-  if (regionStore.markers.focused) {
-     rightPanelStore.open("notes")
-  }
-})
+useInitMapCenter(regionStore.region.center as PointTuple)
 </script>
 
 <template>
    <map-main
-      :class="{ 'cursor-pointer': isDrawing }"
+      :class="{
+         'cursor-pointer': isDrawing,
+         'cross-pointer': regionStore.markers.isPlacing,
+      }"
       @click="regionStore.handleMapClick"
       v-model:region="regionStore.region"
    >
@@ -68,5 +58,8 @@ watch(focusedMarkerId, () => {
 <style scoped>
 .cursor-pointer :deep(.leaflet-container) {
    cursor: pointer;
+}
+.cross-pointer :deep(.leaflet-container), .cross-pointer :deep(.leaflet-interactive) {
+   cursor: crosshair;
 }
 </style>

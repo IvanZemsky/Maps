@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useRightPanelStore } from "@/features/region"
-import type { rightPanelType } from "@/features/region"
+import { useInfoPanelStore } from "@/features/region"
+import type { InfoPanelType } from "@/features/region"
 
-const rightPanelStore = useRightPanelStore()
+const rightPanelStore = useInfoPanelStore()
 
-defineProps<{ type: rightPanelType }>()
+defineProps<{ type: InfoPanelType }>()
 </script>
 
 <template>
