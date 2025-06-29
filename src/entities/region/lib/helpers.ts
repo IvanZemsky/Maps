@@ -4,11 +4,7 @@ import {
    MARKER_ICON_DIFFERENCE,
    MARKER_SIZE,
 } from "../model/const/const"
-import {
-   type Region,
-   type RegionKey,
-   type RegionKeyPolygon,
-} from "../model/types"
+import { type Region, type RegionKey, type RegionKeyPolygon } from "../model/types"
 import { MARKER_TYPES, MARKER_ICONS } from "../model/const/marker-icons"
 
 export function getDefaultRegion(): Region {
@@ -67,7 +63,9 @@ export function getMarkerIcon({
    markerSize = MARKER_SIZE,
    iconMarkerDifference = MARKER_ICON_DIFFERENCE,
 }: GetMarkerOptions) {
-   const iconAnchorSize = markerSize / 2 // to const
+   const anchorSizeDevider = 2 // ?
+
+   const iconAnchorSize = markerSize / anchorSizeDevider
    const iconSize = markerSize - iconMarkerDifference
 
    return L.divIcon({

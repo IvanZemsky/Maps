@@ -68,12 +68,6 @@ export function createMarkersStore(region: Ref<Region>) {
          isPlacing.value = false
       }
 
-      function sortMarkersByDatetime(markers: RegionKeyMarker[]) {
-         return [...markers].sort(
-            (a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime(),
-         )
-      }
-
       function getMarkersByKeyId(keyId: number) {
          return region.value.markers.filter((marker) => marker.keyId === keyId)
       }
@@ -95,7 +89,6 @@ export function createMarkersStore(region: Ref<Region>) {
          handlePlaceSelectedMarker,
          remove: removeMarker,
          focus: focusMarker,
-         sortAllByDatetime: sortMarkersByDatetime,
          setIconToSelected: setIconToSelected,
          select: selectMarker,
          setDesc: setDescToSelected,
