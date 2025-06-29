@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { regionProvideKeys, type Region, type RegionKeyMarker } from "@/entities/region"
-import { useRegionStore } from "../../model/stores/store"
+
 import { computed, provide, type Ref } from "vue"
 import { storeToRefs } from "pinia"
 import { useInject } from "@/shared/lib"
 import NoteDate from "./note-date.vue"
 import MarkerIconControls from "./marker-icon-controls.vue"
 import NoteDesc from "./note-desc.vue"
+import { useRegionStore } from "@/features/region/model/stores/store"
 
 const region = useInject<Ref<Region>>(regionProvideKeys.region)
 

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import { useNoteControls } from "../../lib/use-note-controls"
+
 import { MARKER_ICONS } from "@/entities/region"
 import MarkerIconSelectModal from "./marker-icon-select-modal.vue"
 import MarkerPreview from "./marker-preview.vue"
 import { MColorInput } from "@/shared/ui"
+import { useNoteControls } from "../../../model/composables/use-note-controls"
 
 const { selectedMarker, isSelected } = useNoteControls()
 

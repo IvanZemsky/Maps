@@ -5,4 +5,4 @@ import MapControls from "./ui/map-controls.vue"
 import MapMain from "./ui/map-main.vue"
 
 export { MapPolylines, MapPolygons, MapMarkers, MapControls, MapMain }
-export {useInitMapCenter} from "./lib/use-init-map-center"
+export {useInitMapCenter} from "./model/composables/use-init-map-center"

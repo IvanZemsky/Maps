@@ -6,8 +6,8 @@ import {
    type InfoPanelType,
 } from "../../model/stores/right-panel-store"
 import InfoKeyItem from "./info-key-item.vue"
-import MarkerPreview from "../region-note/marker-preview.vue"
 import { MARKER_ICONS } from "@/entities/region"
+import MarkerPreview from "./region-note/marker-preview.vue"
 
 const type: InfoPanelType = "keys"
 

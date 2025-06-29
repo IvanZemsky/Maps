@@ -1,5 +1,5 @@
 import { ref } from "vue"
-import { useRegionStore } from "../model/stores/store"
+import { useRegionStore } from "../stores/store"
 import { storeToRefs } from "pinia"
 
 export function useLoadTemplate() {

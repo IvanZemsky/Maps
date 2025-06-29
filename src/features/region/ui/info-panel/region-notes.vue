@@ -5,7 +5,7 @@ import {
    useInfoPanelStore,
    type InfoPanelType,
 } from "../../model/stores/right-panel-store"
-import RegionNote from "../region-note/region-note.vue"
+import RegionNote from "./region-note/region-note.vue"
 
 const type: InfoPanelType = "notes"
 

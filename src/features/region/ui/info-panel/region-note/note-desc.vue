@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useNoteControls } from "../../lib/use-note-controls"
+import { useNoteControls } from "../../../model/composables/use-note-controls";
 
 const { marker, selectedMarker, isSelected } = useNoteControls()
 </script>

@@ -4,6 +4,7 @@ import { useRegionStore } from "../../model/stores/store"
 import KeyCardPolygon from "./key-card-polygon.vue"
 import { MColorInput } from "@/shared/ui"
 import KeyRemovalModal from "./key-removal-modal.vue"
+import DeleteFilled from "@vicons/antd/DeleteFilled"
 
 const { id } = defineProps<{ id: number; number: number }>()
 
@@ -41,10 +42,24 @@ function handleModalClose() {
             :polygon="ref(polygon)"
             :number="index + 1"
          />
-         <ui-button size="sm" @click="regionStore.keys.createPolygon(key.id)">
-            Add polygon
-         </ui-button>
-         <ui-button size="sm" color="critical" @click="handleModalOpen">Remove</ui-button>
+         <ui-spacing gap="sm" align="center">
+            <ui-button
+               class="add-polygon-btn"
+               size="sm"
+               @click="regionStore.keys.createPolygon(key.id)"
+            >
+               Add polygon
+            </ui-button>
+            <ui-button
+               variant="outlined"
+               class="remove-key-btn"
+               size="sm"
+               color="critical"
+               @click="handleModalOpen"
+            >
+               <delete-filled />
+            </ui-button>
+         </ui-spacing>
       </ui-spacing>
    </ui-card>
 
@@ -61,7 +76,17 @@ function handleModalClose() {
    border-radius: 15px;
    padding: 0.4rem;
 }
+.add-polygon-btn {
+   flex-grow: 1;
+}
 .select-key-btn {
    width: 100%;
+}
+.remove-key-btn {
+   flex-grow: 0;
+}
+button.remove-key-btn svg {
+   width: auto;
+   height: 0.8rem;
 }
 </style>

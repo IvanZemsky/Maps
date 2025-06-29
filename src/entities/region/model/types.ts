@@ -1,32 +1,10 @@
 import { z } from "zod/v4"
+import { MARKER_TYPES } from "./const/marker-icons"
 
 const latLngTupleSchema = z.union([
    z.tuple([z.number(), z.number()]),
    z.tuple([z.number(), z.number(), z.number()]),
 ])
-
-export const MARKER_TYPES = {
-   battle: "battle",
-   none: "none",
-   alert: "alert",
-   captured: "captured",
-   militaryPlane: "militaryPlane",
-   drone: "drone",
-   statement: "statement",
-   supply: "supply",
-   fires: "fires",
-   police: "police",
-   gun: "gun",
-   flood: "flood",
-   arrest: "arrest",
-   earthquake: "earthquake",
-   civilPlane: "civilPlane",
-   computers: "computers",
-   electricity: "electricity",
-   radioactive: "radioactive",
-   explosion: "explosion",
-   stop: "stop",
-} as const
 
 export const regionKeyMarkerSchema = z.object({
    id: z.number(),

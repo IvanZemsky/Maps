@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { defaultRegionTemplates } from "../model/const"
-import { useLoadTemplate } from "../hooks/use-load-template"
+import { useLoadTemplate } from "../model/composables/use-load-template"
 
-const {selectedTemplate, isError, handleSelect} = useLoadTemplate()
+const { selectedTemplate, isError, handleSelect } = useLoadTemplate()
 </script>
 
 <template>
    <ui-select
-      :class="['preview-select', {'selected': selectedTemplate}]"
+      :class="['preview-select', { selected: selectedTemplate }]"
       size="sm"
       v-model="selectedTemplate"
       placeholder="Templates"
@@ -31,7 +31,7 @@ const {selectedTemplate, isError, handleSelect} = useLoadTemplate()
    width: 120px;
 }
 .selected :deep(button.ui-select__button) {
-  border: 1px solid var(--primary-main);
+   border: 1px solid var(--primary-main);
 }
 .preview-select :deep(.ui-select__options) {
    top: calc(100% + 12px);

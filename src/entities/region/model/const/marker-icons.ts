@@ -1,4 +1,3 @@
-import type { PointTuple } from "leaflet"
 import AlertFilled from "@/shared/assets/icons/alert.svg?url"
 import BattleIcon from "@/shared/assets/icons/battle.svg?url"
 import NoneIcon from "@/shared/assets/icons/none.svg?url"
@@ -20,11 +19,28 @@ import RadioactiveIcon from "@/shared/assets/icons/radioactive.svg?url"
 import ExplosionIcon from "@/shared/assets/icons/explosion.svg?url"
 import StopIcon from "@/shared/assets/icons/stop.svg?url"
 
-import type { MARKER_TYPES } from "./types"
-
-export const MARKER_SIZE = 38
-export const MARKER_ICON_DIFFERENCE = 12
-export const DEFAULT_MAP_CENTER: PointTuple = [52.05, 14.7]
+export const MARKER_TYPES = {
+   battle: "battle",
+   none: "none",
+   alert: "alert",
+   captured: "captured",
+   militaryPlane: "militaryPlane",
+   drone: "drone",
+   statement: "statement",
+   supply: "supply",
+   fires: "fires",
+   police: "police",
+   gun: "gun",
+   flood: "flood",
+   arrest: "arrest",
+   earthquake: "earthquake",
+   civilPlane: "civilPlane",
+   computers: "computers",
+   electricity: "electricity",
+   radioactive: "radioactive",
+   explosion: "explosion",
+   stop: "stop",
+} as const
 
 type MarkerIcon = {
    id: number

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { MARKER_ICONS } from "@/entities/region"
 import { MModal } from "@/shared/ui"
-import { useRegionStore } from "../../model/stores/store"
+import { useRegionStore } from "../../../model/stores/store"
 
 const open = defineModel<boolean>({
    required: true,

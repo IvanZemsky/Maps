@@ -8,7 +8,7 @@ import LoadRegionFromFileBtn from "./ui/load-region-from-file-btn.vue"
 
 export { useRegionStore } from "./model/stores/store"
 export { useInfoPanelStore } from "./model/stores/right-panel-store"
-export { useWatchFocusedMarker } from "./lib/use-watch-focused-markes"
+export { useWatchFocusedMarker } from "./model/composables/use-watch-focused-marker"
 
 export type { InfoPanelType } from "./model/stores/right-panel-store"
 

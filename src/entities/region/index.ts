@@ -3,7 +3,6 @@ export type {
    RegionKeyPolygon,
    RegionKey,
    RegionKeyMarker,
-   MARKER_TYPES,
 } from "./model/types"
 export {
    regionSchema,
@@ -19,5 +18,6 @@ export {
    getDefaltMarker,
 } from "./lib/helpers"
 
-export {regionProvideKeys} from "./model/provide-keys"
-export { MARKER_ICONS, DEFAULT_MAP_CENTER } from "./model/const"
+export { regionProvideKeys } from "./model/const/provide-keys"
+export { MARKER_ICONS, MARKER_TYPES} from "./model/const/marker-icons"
+export {DEFAULT_MAP_CENTER } from "./model/const/const"
