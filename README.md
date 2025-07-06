@@ -19,4 +19,4 @@
 
 1. Склонируйте репозиторий: `git clone https://github.com/IvanZemsky/Maps.git [директория]`
 2. Выполните установку пакетов: `npm install `
-3. Запустите проект: `npm start`
+3. Запустите проект: `npm run dev`
