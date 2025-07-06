@@ -2,7 +2,12 @@
 
 Демо: https://ivanzemsky.github.io/Maps/
 
+<picture>
+ <img alt="Иллюстрация" src="./readme-img.JPG">
+</picture>
+
 Технологии разработки:
+
 - Vue
 - TypeScript
 - Pinia
@@ -12,6 +17,6 @@
 
 Установка:
 
-1. Склонируйте репозиторий: ```git clone https://github.com/IvanZemsky/Maps.git [директория]```
-2. Выполните установку пакетов: ```npm install ```
-3. Запустите проект: ```npm start```
+1. Склонируйте репозиторий: `git clone https://github.com/IvanZemsky/Maps.git [директория]`
+2. Выполните установку пакетов: `npm install `
+3. Запустите проект: `npm start`
